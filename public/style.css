@@ -1,0 +1,21 @@
+
+h1, h2, h3, h4, h5, .display-1, .display-2, .navbar-brand, .btn, .linksFooter {
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Body text and general content */
+body, p, a, li, span, small {
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Optional font smoothing */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bg-green-gradient-footer {
+   background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
+}
+
