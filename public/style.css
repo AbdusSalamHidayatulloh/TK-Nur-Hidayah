@@ -1,11 +1,24 @@
-
-h1, h2, h3, h4, h5, .display-1, .display-2, .navbar-brand, .btn, .linksFooter {
+h1,
+h2,
+h3,
+h4,
+h5,
+.display-1,
+.display-2,
+.navbar-brand,
+.btn,
+.linksFooter {
   font-family: 'Poppins', sans-serif;
   letter-spacing: 0.5px;
 }
 
 /* Body text and general content */
-body, p, a, li, span, small {
+body,
+p,
+a,
+li,
+span,
+small {
   font-family: 'Nunito', sans-serif;
 }
 
@@ -16,6 +29,23 @@ body {
 }
 
 .bg-green-gradient-footer {
-   background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
+  background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
+  border-top-left-radius: 1.5em;
+  border-top-right-radius: 1.5em;
 }
 
+.bg-green-gradient-header {
+  background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
+  border-bottom-left-radius: 1.5em;
+  border-bottom-right-radius: 1.5em;
+}
+
+.bg-green-gradient-navbar {
+  position: fixed;
+  top: 90px;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #003500, #1c481e, #446c46);
+  border-bottom-left-radius: 1.5em;
+  border-bottom-right-radius: 1.5em;
+}
