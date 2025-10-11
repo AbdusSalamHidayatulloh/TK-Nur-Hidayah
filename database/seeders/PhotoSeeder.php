@@ -27,6 +27,14 @@ class PhotoSeeder extends Seeder
                 'image_path' => 'image/kirab_maulid_nabi.jpg'
             ],
             [
+                'title' => 'Kegiatan belajar bahasa Jawa',
+                'image_path' => 'image/kegiatan_bahasa.jpg'
+            ],
+            [
+                'title' => 'Kegiatan belajar bahasa Inggris',
+                'image_path' => 'image/kegiatan_bahasa_inggris.jpg'
+            ],
+            [
                 'title' => 'Kegiatan Kirab Maulid Nabi',
                 'image_path' => 'image/kirab_maulid_nabi.jpg'
             ],
@@ -38,10 +46,6 @@ class PhotoSeeder extends Seeder
                 'title' => 'Mengaji Ummi',
                 'image_path' => 'image/manasik_haji.jpg'
             ],
-            [
-                'title' => 'Kegiatan belajar bahasa Jawa',
-                'image_path' => 'image/kegiatan_bahasa.jpg'
-            ]
         ]);
     }
 }
