@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="TK/KB Nur Hidayah — tempat belajar menyenangkan untuk anak usia dini. Kami membantu anak tumbuh dengan ceria, kreatif, dan percaya diri.">
+    <meta name="keywords" content="TK, taman kanak-kanak, pendidikan anak, KB, sekolah anak, TK Nur Hidayah">
+    <meta name="author" content="TK/KB Nur Hidayah">
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">

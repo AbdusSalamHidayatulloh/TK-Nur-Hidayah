@@ -1,10 +1,9 @@
 <?php
 
+use App\Http\Controllers\TeaserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [TeaserController::class, 'index']);
 
 Route::get('/programs', function () {
     return view('program');
@@ -15,10 +14,5 @@ Route::get('/enlist', function () {
 });
 
 Route::get('/about-us', function () {
-    return view('aboutus');
+    return view('about-us');
 });
-
-
-
-
-
