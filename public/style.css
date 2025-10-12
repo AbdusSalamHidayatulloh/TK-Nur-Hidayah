@@ -12,7 +12,15 @@ h5,
   letter-spacing: 0.5px;
 }
 
-/* Body text and general content */
+html, 
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+}
+
 body,
 p,
 a,
@@ -27,6 +35,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* ^ Essentials, for fonts and whole main ^ */
 
 .bg-green-gradient-footer {
   background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
@@ -36,16 +45,18 @@ body {
 
 .bg-green-gradient-header {
   background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
-  border-bottom-left-radius: 1.5em;
-  border-bottom-right-radius: 1.5em;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .bg-green-gradient-navbar {
   position: fixed;
-  top: 90px;
+  top: 100px;
   left: 0;
   width: 100%;
+  padding-bottom: 1000px;
   background: linear-gradient(135deg, #003500, #1c481e, #446c46);
   border-bottom-left-radius: 1.5em;
   border-bottom-right-radius: 1.5em;
 }
+/* ^ For colors and other stuff like header, footer, etc ^ */
