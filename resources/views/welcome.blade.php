@@ -53,7 +53,7 @@
     <p class="text-center mt-3 mb-2">Daftarkan anak Anda di TK/KB Nur Hidayah dengan lingkungan yang menyenangkan, aman dan penuh
         kasih sayang</p>
     <div class="d-flex justify-content-center">
-        <a href="/about-us" class="btn btn-primary">Daftar Sekarang <span class="material-symbols-rounded"
+        <a href="/enlist" class="btn btn-primary">Daftar Sekarang <span class="material-symbols-rounded"
                 style="vertical-align: middle; font-size: 18px;">group</span>
         </a>
     </div>
