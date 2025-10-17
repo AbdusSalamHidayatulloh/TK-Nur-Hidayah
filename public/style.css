@@ -60,3 +60,26 @@ body {
   border-bottom-right-radius: 1.5em;
 }
 /* ^ For colors and other stuff like header, footer, etc ^ */
+
+.photo-card {
+    cursor: pointer;
+}
+
+.photo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.photo-card:hover .photo-overlay {
+    transform: translateY(0);
+}
+
+/* For image hovering feature */

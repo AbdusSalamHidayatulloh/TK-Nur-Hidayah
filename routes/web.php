@@ -1,18 +1,17 @@
 <?php
 
-use App\Http\Controllers\TeaserController;
+use App\Http\Controllers\ContentController;
+use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [TeaserController::class, 'index']);
+Route::get('/', [ContentController::class, 'index']);
 
-Route::get('/programs', function () {
-    return view('program');
-});
+Route::get('/programs', [ContentController::class, 'gallery']);
+
+Route::get('/about-us', [TeacherController::class, 'index']);
+
+
 
 Route::get('/enlist', function () {
-    return view('contact');
-});
-
-Route::get('/about-us', function () {
-    return view('about-us');
+    return view('enlist');
 });

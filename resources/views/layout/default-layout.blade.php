@@ -18,7 +18,7 @@
     <title>@yield("title")</title>
 </head>
 
-<body class="d-flex flex-column overflow-hidden">
+<body class="d-flex flex-column overflow-hidden min-vh-100">
     <header
         class="w-100 fixed-top d-flex flex-row justify-content-between bg-green-gradient-header justify-content-sm-center align-items-center bg-success p-3 z-2">
         <a href="/" class="text-decoration-none d-flex flex-row h-100 align-items-center">
