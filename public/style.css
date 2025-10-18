@@ -45,20 +45,10 @@ body {
 
 .bg-green-gradient-header {
   background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.bg-green-gradient-navbar {
-  position: fixed;
-  top: 100px;
-  left: 0;
-  width: 100%;
-  padding-bottom: 1000px;
-  background: linear-gradient(135deg, #003500, #1c481e, #446c46);
   border-bottom-left-radius: 1.5em;
   border-bottom-right-radius: 1.5em;
 }
+<<<<<<< Updated upstream
 /* ^ For colors and other stuff like header, footer, etc ^ */
 
 .photo-card {
@@ -83,3 +73,31 @@ body {
 }
 
 /* For image hovering feature */
+=======
+
+.mobile-sidebar {
+  height: 100vh;
+  width: 40vw;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.mobile-sidebar.show {
+  transform: translateX(0);
+}
+
+.overlay {
+  pointer-events: none;
+  background-color: #0000003c;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* ^ For colors and other stuff like header, footer, etc ^ */
+>>>>>>> Stashed changes
