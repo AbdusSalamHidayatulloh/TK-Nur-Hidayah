@@ -16,13 +16,13 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
-    <title>@yield("title")</title>
+    <title>@yield('title')</title>
 </head>
 
 <body class="d-flex flex-column overflow-hidden min-vh-100">
     <header
         class="w-100 fixed-top d-flex flex-row justify-content-between bg-green-gradient-header align-items-center p-3 z-2">
-        <a href="/" class="text-decoration-none d-flex  flex-row h-100 align-items-center">
+        <a href="/" class="text-decoration-none d-flex z-1 flex-row h-100 align-items-center">
             <img src="/image/logo.png" width="70" height="70" class="me-2" />
             <h4 class="text-white fw-bold mb-0 mt-0">TK/KB Nur Hidayah</h4>
         </a>
@@ -39,23 +39,25 @@
                 data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 36px; cursor:pointer;">
                 menu
             </span>
-            <div id="mobile-menu"
-                class="mobile-sidebar position-fixed end-0 top-0 p-4 d-flex flex-column bg-dark text-white rounded rounded-bottom-3 rounded-start-3 shadow-sm gap-3">
-                <a href="/" class="text-decoration-none text-white fw-semibold py-2">Beranda</a>
-                <a href="/programs" class="text-decoration-none text-white fw-semibold py-2">Program</a>
-                <a href="/about-us" class="text-decoration-none text-white fw-semibold py-2">Tentang Kami</a>
-                <a href="/enlist" class="text-decoration-none text-white fw-semibold py-2">Pendaftaran</a>
-            </div>
-        </div>
     </header>
-    <div id="overlay" class="overlay position-fixed top-0 start-0 w-100 h-100"></div>
+    <div id="mobile-menu"
+        class="mobile-sidebar d-md-none position-fixed end-0 top-0 p-4 d-flex flex-column text-white gap-4 rounded rounded-bottom-5 rounded-start-5 shadow-sm gap-3 z-5">
+        <div class="w-100 d-flex justify-content-center align-items-center">
+            <img src="/image/logo.png" width="120" height="120" alt="TK/KB Nur Hidayah logo">
+        </div>
+        <a href="/" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Beranda</a>
+        <a href="/programs" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Program</a>
+        <a href="/about-us" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Tentang Kami</a>
+        <a href="/enlist" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Pendaftaran</a>
+    </div>
+    <div id="overlay" class="overlay position-fixed top-0 start-0 w-100 h-100 d-md-none z-3"></div>
     <!-- For the navbar under the header -->
     <main class="z-0" style="padding-top: 70px; padding-bottom: 50px;">
         @yield('mainContent')
     </main>
     <footer class="bg-green-gradient-footer py-5 mt-auto">
         <div class="container">
-            <div class="d-flex flex-md-row flex-column justify-content-evenly align-items-center gap-3">
+            <div class="d-flex flex-md-row flex-column justify-content-evenly align-items-center gap-4">
                 <img width="170" height="170" src="/image/logo.png">
                 <div class="d-flex flex-column gap-2">
                     <a href="/" class="text-decoration-none text-white fw-semibold linksFooter mb-0 mt-0"
@@ -97,6 +99,7 @@
                                 class="rounded border border-2 border-white" alt="Gmail Logo" />
                         </a>
                     </div>
+                    <p class="pt-4 text-white">©2025 Nur Hidayah</p>
                 </div>
             </div>
         </div>
@@ -105,7 +108,7 @@
     <!-- For Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HoA13XY0ZyaFqPh2V6F4fy1R6n+YtFTo8ML1v+CTe3YHjpyMfdqUbn7Q3Z3DoaTo" crossorigin="anonymous">
-        </script>
+    </script>
 </body>
 
 </html>
