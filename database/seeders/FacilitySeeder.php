@@ -6,7 +6,7 @@ use App\Models\Facility;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SeederFactory extends Seeder
+class FacilitySeeder extends Seeder
 {
     /**
      * Run the database seeds.

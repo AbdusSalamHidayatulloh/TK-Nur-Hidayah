@@ -12,7 +12,7 @@ h5,
   letter-spacing: 0.5px;
 }
 
-html, 
+html,
 body {
   margin: 0;
   padding: 0;
@@ -35,6 +35,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 /* ^ Essentials, for fonts and whole main ^ */
 
 .bg-green-gradient-footer {
@@ -52,27 +53,28 @@ body {
 main {
   background-color: #FAECE2;
 }
+
 /* ^ For colors and other stuff like header, footer, etc ^ */
 
 .photo-card {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .photo-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 15px;
-    text-align: center;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-in-out;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
 }
 
 .photo-card:hover .photo-overlay {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 /* For image hovering feature */
@@ -85,10 +87,15 @@ main {
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
   margin-right: -5px;
+  border-radius: 12px;
+  background-image:
+    linear-gradient(#FAECE2, #FAECE2),
+    linear-gradient(135deg, #006400, #318135, #5a8f5d);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
 }
 
 .mobile-sidebar.show {
-  background-color: #FAECE2;
   transform: translateX(0);
 }
 
@@ -104,4 +111,12 @@ main {
   opacity: 1;
   pointer-events: auto;
 }
+
+@media (min-width: 768px) {
+  .width-md {
+    width: 40% !important;
+    flex: 0 0 auto !important;
+  }
+}
+
 /* ^ For colors and other stuff like header, footer, etc ^ */

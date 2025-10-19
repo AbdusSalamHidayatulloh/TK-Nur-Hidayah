@@ -31,6 +31,8 @@
             <a href="/programs" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Program</a>
             <a href="/about-us" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Tentang
                 Kami</a>
+            <a href="/our-facility" class="text-decoration-none text-white fw-semibold"
+                style="font-size: 18px">Fasilitas</a>
             <a href="/enlist" class="text-decoration-none text-white fw-semibold"
                 style="font-size: 18px">Pendaftaran</a>
         </div>
@@ -41,14 +43,18 @@
             </span>
     </header>
     <div id="mobile-menu"
-        class="mobile-sidebar d-md-none position-fixed end-0 top-0 p-4 d-flex flex-column text-white gap-4 rounded rounded-bottom-5 rounded-start-5 shadow-sm gap-3 z-5">
+        class="mobile-sidebar d-md-none position-fixed end-0 top-0 d-flex p-1 flex-column text-white gap-4 rounded rounded-start-5 shadow-sm gap-3 z-5">
         <div class="w-100 d-flex justify-content-center align-items-center">
             <img src="/image/logo.png" width="120" height="120" alt="TK/KB Nur Hidayah logo">
         </div>
-        <a href="/" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Beranda</a>
-        <a href="/programs" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Program</a>
-        <a href="/about-us" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Tentang Kami</a>
-        <a href="/enlist" class="text-decoration-none w-100 text-black fs-5 fw-bolder">Pendaftaran</a>
+        <div class="d-flex justify-content-center">
+            <hr class="mt-0 mb-0 border border-1 border-black w-75">
+        </div>
+        <a href="/" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Beranda</a>
+        <a href="/programs" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Program</a>
+        <a href="/about-us" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Tentang Kami</a>
+        <a href="/our-facility" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Fasilitas</a>
+        <a href="/enlist" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Pendaftaran</a>
     </div>
     <div id="overlay" class="overlay position-fixed top-0 start-0 w-100 h-100 d-md-none z-3"></div>
     <!-- For the navbar under the header -->
@@ -74,6 +80,11 @@
                         style="font-size: 20px;">
                         <span class="material-symbols-rounded"
                             style="vertical-align: middle; font-size: 24px;">emoji_people</span> Tentang Kami
+                    </a>
+                    <a href="/our-facility" class="text-decoration-none text-white fw-semibold linksFooter mb-0 mt-0"
+                        style="font-size: 20px;">
+                        <span class="material-symbols-rounded"
+                            style="vertical-align: middle; font-size: 24px;">apartment</span> Fasilitas
                     </a>
                     <a href="/enlist" class="text-decoration-none text-white fw-semibold linksFooter mb-0 mt-0"
                         style="font-size: 20px;">
@@ -108,7 +119,7 @@
     <!-- For Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HoA13XY0ZyaFqPh2V6F4fy1R6n+YtFTo8ML1v+CTe3YHjpyMfdqUbn7Q3Z3DoaTo" crossorigin="anonymous">
-    </script>
+        </script>
 </body>
 
 </html>
