@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use App\Models\Facility;
 
 class ContentController extends Controller
 {
     public function index() {
         $photos = Photo::take(3)->get();
-        return view('welcome', compact('photos'));
+        $facilityTease = FacilityController::teaserData();
+        return view('welcome', compact('photos', 'facilityTease'));
     }
 
     public function gallery() {

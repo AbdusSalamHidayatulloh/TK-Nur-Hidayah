@@ -11,4 +11,8 @@ class FacilityController extends Controller
         $facilities = Facility::all();
         return view('facility', compact('facilities'));
     }
+
+    public static function teaserData() {
+        return Facility::take(3)->get();
+    }
 }

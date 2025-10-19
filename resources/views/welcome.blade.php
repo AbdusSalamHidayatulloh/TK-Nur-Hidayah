@@ -53,13 +53,39 @@
                 </div>
             @endforeach
         </div>
-
         <div class="mt-3 text-center">
-            <p>Untuk penjelasan lebih dalam, tekan tombol dibawah</p>
+            <p>Untuk semua program dari kami, tekan tombol dibawah</p>
             <div class="d-flex justify-content-center">
                 <a href="/programs" class="btn btn-primary mb-0">
                     Pelajari Lebih Lanjut <span class="material-symbols-rounded"
                         style="vertical-align: middle; font-size: 18px;">school</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fasilitas -->
+     <div class="mt-5 mb-5 container">
+        <h1 class="mb-5 text-center fw-bold">Fasilitas Kami</h1>
+
+        <div class="d-flex flex-column flex-md-row justify-content-lg-between align-items-center gap-2">
+            @foreach ($facilityTease  as $facility)
+                <div class="card shadow-sm h-100 overflow-hidden position-relative photo-card shadow-lg"
+                    style="width: 100%; max-width: 400px;">
+                    <img src="{{ asset($facility->image_path) }}" class="card-img-top object-fit-cover" style="height: 300px;"
+                        alt="{{ $facility->name }}">
+                    <div class="photo-overlay">
+                        <p class="mb-0 text-white fw-bold">{{ $facility->name }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <div class="mt-3 text-center">
+            <p>Untuk penjelasan mengenai fasilitas kami, tekan tombol dibawah</p>
+            <div class="d-flex justify-content-center">
+                <a href="/our-facility" class="btn btn-primary mb-0">
+                    Pelajari Lebih Lanjut <span class="material-symbols-rounded"
+                        style="vertical-align: middle; font-size: 18px;">apartment</span>
                 </a>
             </div>
         </div>
