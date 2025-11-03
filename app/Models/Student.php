@@ -7,19 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Teacher extends Model
+class Student extends Model
 {
-    /** @use HasFactory<\Database\Factories\TeacherFactory> */
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'position',
-        'image',
-        'age'
+        'birthday',
+        'classroom_id',
+        'student_image'
     ];
 
-    public function students(): BelongsTo {
+    public function students() : BelongsTo {
         return $this->belongsTo(Classroom::class);
     }
 }
