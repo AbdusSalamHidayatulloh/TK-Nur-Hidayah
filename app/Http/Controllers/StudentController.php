@@ -14,6 +14,7 @@ class StudentController extends Controller
                 'maintitle' => 'Searched Murid: '.$request->searchStudent,
                 'students' => Student::where('name', 'like', '%'.$request->searchStudent.'%')
                 ->paginate(10)
+                ->withQueryString(),
             ]);
         } else {
             return view('student', [

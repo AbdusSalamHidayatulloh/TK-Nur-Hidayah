@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Teacher extends Model
 {
@@ -19,7 +20,7 @@ class Teacher extends Model
         'age'
     ];
 
-    public function students(): BelongsTo {
-        return $this->belongsTo(Classroom::class);
+    public function classrooms(): HasOne {
+        return $this->hasOne(Classroom::class);
     }
 }

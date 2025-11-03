@@ -9,7 +9,7 @@ class FacilityController extends Controller
 {
     public function index() {
         $facilities = Facility::all();
-        return view('facility', compact('facilities'));
+        return view('static.facility', compact('facilities'));
     }
 
     public static function teaserData() {

@@ -14,5 +14,5 @@ Route::get('/about-us', [TeacherController::class, 'index']);
 Route::get('/our-facility', [FacilityController::class, 'index']);
 
 Route::get('/enlist', function () {
-    return view('enlist');
+    return view('static.enlist');
 });
