@@ -14,6 +14,7 @@ class Teacher extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'name',
         'position',
         'image',
@@ -22,5 +23,9 @@ class Teacher extends Model
 
     public function classrooms(): HasOne {
         return $this->hasOne(Classroom::class);
+    }
+
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class);
     }
 }
