@@ -23,4 +23,6 @@ class User extends Model
     public function teacher(): HasOne {
         return $this->hasOne(Teacher::class);
     }
+
+    
 }

@@ -20,7 +20,7 @@ class Teacher extends Model
         'age'
     ];
 
-    public function classrooms(): HasOne {
+    public function classroom(): HasOne {
         return $this->hasOne(Classroom::class);
     }
 
