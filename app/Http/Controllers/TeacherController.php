@@ -29,4 +29,13 @@ class TeacherController extends Controller
             ]);
         }
     }
+
+    public function show(Teacher $teacher) {
+        return view('teacher-profile', [
+            'sitename' => $teacher->user->name,
+            'maintitle' => $teacher->user->name."'s Data",
+            'teacher' => $teacher,
+            'classroom' => $teacher->classrooms->name
+        ]);
+    }
 }
