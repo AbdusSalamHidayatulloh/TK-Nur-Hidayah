@@ -9,4 +9,8 @@ class Facility extends Model
 {
     /** @use HasFactory<\Database\Factories\FacilityFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        //data
+    ];
 }
