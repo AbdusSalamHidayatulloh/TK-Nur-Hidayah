@@ -14,11 +14,11 @@ class Student extends Model
     protected $fillable = [
         'name',
         'birthday',
-        'classroom_id',
-        'student_image'
+        'student_image',
+        'classroom_id'
     ];
 
-    public function students() : BelongsTo {
+    public function student() : BelongsTo {
         return $this->belongsTo(Classroom::class);
     }
 }
