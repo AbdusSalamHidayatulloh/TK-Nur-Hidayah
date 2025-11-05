@@ -18,7 +18,7 @@ class TeacherSeeder extends Seeder
         Teacher::create([
             'user_id' => $annaUser->id,
             'position' => 'Kindergarten Teacher',
-            'age' => 28,
+            'birthdate' => "29/11/2000",
             'image' => '/image/guru1'
         ]);
 
@@ -26,7 +26,7 @@ class TeacherSeeder extends Seeder
         Teacher::create([
             'user_id' => $muhammadUser->id,
             'position' => 'Preschool Teacher',
-            'age' => 32,
+            'birthdate' => "12/03/1998",
             'image' => '/image/guru2'
         ]);
     }
