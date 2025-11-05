@@ -17,17 +17,24 @@ class TeacherSeeder extends Seeder
         $annaUser = User::where('email', 'anna@nur.hidayah.com')->first();
         Teacher::create([
             'user_id' => $annaUser->id,
-            'position' => 'Kindergarten Teacher',
+            'position' => 'Guru Kelas A',
             'birthdate' => "29/11/2000",
-            'image' => '/image/guru1'
+            'image' => '/image/guru1.jpg'
         ]);
 
         $muhammadUser = User::where('email', 'Muhammad@nur.hidayah.com')->first();
         Teacher::create([
             'user_id' => $muhammadUser->id,
-            'position' => 'Preschool Teacher',
+            'position' => 'Guru Kelas B',
             'birthdate' => "12/03/1998",
-            'image' => '/image/guru2'
+            'image' => '/image/guru2.jpg'
+        ]);
+        $joelUser = User::where('email', 'joel@nur.hidayah.com')->first();
+        Teacher::create([
+            'user_id' => $joelUser->id,
+            'position' => 'Guru Kelas 2C',
+            'birthdate' => "29/05/2001",
+            'image' => '/image/guru3.jpg',
         ]);
     }
 }
