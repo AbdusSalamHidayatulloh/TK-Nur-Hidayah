@@ -100,19 +100,15 @@ class TeacherController extends Controller
 
             $user->update([
                 'name' => $validateData['name'] ?? $user->name, 
-                'email' => $validateData['email'] ?? $user->email,
                 'password' => 
                 //Check if there's a changes in the password field
                     !empty($validateData['password'])
                     ? bcrypt($validateData['password'])
                     : $user->password,
-                'role' => $validateData['role'] ?? $user->role
             ]);
 
             $teacher->update([
-                'position' => $validateData['position'] ?? $teacher->position,
                 'image' => $validateData['image'] ?? $teacher->image,
-                'birthdate' => $validateData['birthdate'] ?? $teacher->birthdate
             ]);
         }
     }

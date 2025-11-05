@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classroom;
+use App\Http\Requests\StudentRequest;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -66,6 +66,34 @@ class StudentController extends Controller
         $student->save();
 
         return back()->with('success', 'Student removed from the classroom');
+    }
+    
+    public function addStudent(StudentRequest $request, $studentId) {
+        $user = $request->user();
+        if($user->role === 'admin') {
+            $validateData = $request->validate($request->rulesForCreate());
+            Student::create([
+                'name' => $validateData['name'],
+                'birthdate' => $validateData['birthdate'],
+                'student_image' => $validateData['student_image']
+            ]);
+        }
+        return back()->with('Success', 'A student has been created');
+    }
+
+    public function deleteStudent(StudentRequest $request, int $studentId) {
+        $studentSelected = Student::findOrFail($studentId);
+        if($request->role !== 'admin') {
+            abort(400, 'Unauthorized access of deleting student data');
+        }
+
+        $studentSelected->delete();
+
+        return back()->with('Success', 'Student has been deleted');
+    }
+
+    public function updateStudent(StudentRequest $request, int $studentId) {
+        
     }
 
     public function showStudent(Student $student)
