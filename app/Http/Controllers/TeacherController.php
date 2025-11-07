@@ -59,7 +59,10 @@ class TeacherController extends Controller
                 'position' => $validateData['position'],
                 'birthdate' => $validateData['birthdate']
             ]);
+        } elseif ($user->role === 'teacher') {
+            abort(400, 'Unauthorized access');
         }
+        return back()->with('Success', 'You have added a new teacher');
     }
 
     public function deleteTeacher(TeacherRequest $request, int $userId): RedirectResponse {
@@ -68,11 +71,10 @@ class TeacherController extends Controller
 
         if($teacherUser->role !== 'teacher') {
             abort(400, 'Cannot delete a non teacher user (admin)');
+        } else {
+            $teacherUser->delete();
+            return back()->with('Success', 'Teacher has been deleted');
         }
-
-        $teacherUser->delete();
-
-        return back()->with('Success', 'Teacher has been deleted');
     } 
 
     public function updateTeacher(TeacherRequest $request, int $userId) {
@@ -93,6 +95,8 @@ class TeacherController extends Controller
                 'image' => $validateData['image'] ?? $teacher->image,
                 'birthdate' => $validateData['birthdate'] ?? $teacher->birthdate
             ]);
+
+            return back()->with('Success', 'Admin change a Teacher profile');
         } elseif ($currentUser->role === 'teacher') {
             $validateData = $request->validated($request->rulesForUpdate($userId));
             $user = User::findOrFail($userId);
@@ -110,6 +114,8 @@ class TeacherController extends Controller
             $teacher->update([
                 'image' => $validateData['image'] ?? $teacher->image,
             ]);
+
+            return back()->with('Success', 'You have change your profile, teacher');
         }
     }
 }

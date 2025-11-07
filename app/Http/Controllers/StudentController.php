@@ -15,7 +15,7 @@ class StudentController extends Controller
         if ($user->role === 'admin') {
             $students = Student::paginate(10);
             $maintitle = 'All Students';
-        } else {
+        } elseif($user->role === 'teacher') {
             $students = Student::paginate(10);
             $maintitle = 'All Students (Readonly)';
             $myClassroom = $user->teacher->classroom ?? null;
@@ -93,7 +93,21 @@ class StudentController extends Controller
     }
 
     public function updateStudent(StudentRequest $request, int $studentId) {
-        
+        $currentUser = $request->user();
+        if($currentUser === 'admin') {
+            $validateData = $request->validate($request->rulesForUpdate($studentId));
+            $studentfind = Student::findOrFail($studentId);
+            
+            $studentfind->update([
+                'name' => $validateData['name'] ?? $studentfind->name,
+                'birthdate' => $validateData['birthdate'] ?? $studentfind->birthdate,
+                'student_image' => $validateData['student_image'] ?? $studentfind->student_image
+            ]);
+
+            return back()->with('Success', 'Student has been updated');
+        } elseif ($currentUser === 'teacher') {
+            abort(400, "Unauthorized access");
+        }
     }
 
     public function showStudent(Student $student)
