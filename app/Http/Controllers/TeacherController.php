@@ -10,40 +10,44 @@ use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $teachers = Teacher::all();
         return view('static.about-us', compact('teachers'));
     }
 
-    public function indexTeacher(Request $request) {
-        if($request->has('teacherSearch')) {
-                return view('teacher', [ 
+    public function indexTeacher(Request $request)
+    {
+        if ($request->has('teacherSearch')) {
+            return view('teacher', [
                 'sitename' => $request->teacherSearch,
-                'maintitle' => 'Searched Murid: '.$request->teacherSearch,
-                'teachers' => Teacher::where('name', 'like', '%'.$request->teacherSearch.'%')
-                ->paginate(10)
-                ->withQueryString(),
+                'maintitle' => 'Searched Murid: ' . $request->teacherSearch,
+                'teachers' => Teacher::where('name', 'like', '%' . $request->teacherSearch . '%')
+                    ->paginate(10)
+                    ->withQueryString(),
             ]);
         } else {
             return view('teacher', [
                 'sitename' => $request->teacherSearch,
-                'maintitle' => 'Searched Murid: '.$request->teacherSearch,
+                'maintitle' => 'Searched Murid: ' . $request->teacherSearch,
                 'teachers' => Teacher::paginate(10)
             ]);
         }
     }
 
-    public function show(Teacher $teacher) {
+    public function show(Teacher $teacher)
+    {
         return view('teacher-profile', [
             'sitename' => $teacher->user->name,
-            'maintitle' => $teacher->user->name."'s Data",
+            'maintitle' => $teacher->user->name . "'s Data",
             'teacher' => $teacher,
         ]);
     }
 
-    public function addTeacher(TeacherRequest $request) {
+    public function addTeacher(TeacherRequest $request)
+    {
         $user = $request->user();
-        if($user->role === 'admin') {
+        if ($user->role === 'admin') {
             $validateData = $request->validate($request->rulesForCreate());
 
             $newUser = User::create([
@@ -61,30 +65,35 @@ class TeacherController extends Controller
         } elseif ($user->role === 'teacher') {
             abort(400, 'Unauthorized access');
         }
-        return back()->with('Success', 'You have added a new teacher');
+        return redirect()->back()->with('Success', 'You have added a new teacher');
     }
 
-    public function deleteTeacher(TeacherRequest $request, int $userId): RedirectResponse {
-        //Find the teacher
-        $teacherUser = User::findOrFail($userId);
+    public function deleteTeacher(TeacherRequest $request, int $userId): RedirectResponse
+    {
+        $user = $request->user();
+        if ($user->role === 'admin') {
+            //Find the teacher
+            $teacherUser = User::findOrFail($userId);
 
-        if($teacherUser->role !== 'teacher') {
-            abort(400, 'Cannot delete a non teacher user (admin)');
-        } else {
+            if ($teacherUser->role !== 'teacher') {
+                abort(403, 'Cannot delete a non teacher user (admin)');
+            }
             $teacherUser->delete();
-            return back()->with('Success', 'Teacher has been deleted');
+            return redirect()->back()->with('Success', 'Teacher has been deleted');
         }
-    } 
+        abort(403, 'Unauthorized Access');
+    }
 
-    public function updateTeacher(TeacherRequest $request, int $userId) {
+    public function updateTeacher(TeacherRequest $request, int $userId)
+    {
         $currentUser = $request->user();
-        if($currentUser->role === 'admin') {
+        if ($currentUser->role === 'admin') {
             $validateData = $request->validate($request->rulesForUpdate($userId));
             $user = User::findOrFail($userId);
             $teacher = $user->teacher;
 
             $user->update([
-                'name' => $validateData['name'] ?? $user->name, 
+                'name' => $validateData['name'] ?? $user->name,
                 'email' => $validateData['email'] ?? $user->email,
                 'role' => $validateData['role'] ?? $user->role
             ]);
@@ -95,17 +104,17 @@ class TeacherController extends Controller
                 'birthdate' => $validateData['birthdate'] ?? $teacher->birthdate
             ]);
 
-            return back()->with('Success', 'Admin change a Teacher profile');
+            return redirect()->back()->with('Success', 'Admin change a Teacher profile');
         } elseif ($currentUser->role === 'teacher') {
             $validateData = $request->validated($request->rulesForUpdate($userId));
             $user = User::findOrFail($userId);
             $teacher = $user->teacher;
 
             $user->update([
-                'name' => $validateData['name'] ?? $user->name, 
-                'password' => 
+                'name' => $validateData['name'] ?? $user->name,
+                'password' =>
                 //Check if there's a changes in the password field
-                    !empty($validateData['password'])
+                !empty($validateData['password'])
                     ? bcrypt($validateData['password'])
                     : $user->password,
             ]);
@@ -114,7 +123,7 @@ class TeacherController extends Controller
                 'image' => $validateData['image'] ?? $teacher->image,
             ]);
 
-            return back()->with('Success', 'You have change your profile, teacher');
+            return redirect()->back()->with('Success', 'You have change your profile, teacher');
         }
     }
 }
