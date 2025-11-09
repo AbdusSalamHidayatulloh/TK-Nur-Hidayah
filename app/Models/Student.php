@@ -17,8 +17,4 @@ class Student extends Model
         'student_image',
         'classroom_id'
     ];
-
-    public function student() : BelongsTo {
-        return $this->belongsTo(Classroom::class);
-    }
 }

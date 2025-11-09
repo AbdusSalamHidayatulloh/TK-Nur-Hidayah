@@ -19,10 +19,6 @@ class Teacher extends Model
         'birthdate'
     ];
 
-    public function classroom(): HasOne {
-        return $this->hasOne(Classroom::class);
-    }
-
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
