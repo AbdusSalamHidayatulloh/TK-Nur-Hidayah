@@ -9,7 +9,6 @@ class Photo extends Model
 {
     protected $fillable = [
         'title',
-        'event_date_took',
         'image_path',
         'event_id'
     ];
