@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('photos', function (Blueprint $table){
             $table->id();
             $table->string('title');
-            $table->string('event_start_date');
-            $table->string('event_end_date');
             $table->string('image_path');
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->timestamps();
