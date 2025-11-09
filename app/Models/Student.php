@@ -15,6 +15,5 @@ class Student extends Model
         'name',
         'birthdate',
         'student_image',
-        'classroom_id'
     ];
 }

@@ -11,6 +11,8 @@ class Facility extends Model
     use HasFactory;
 
     protected $fillable = [
-        //data
+        'image_path',
+        'name',
+        'description'
     ];
 }
