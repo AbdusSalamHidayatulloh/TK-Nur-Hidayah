@@ -18,7 +18,6 @@ class StudentController extends Controller
         } elseif ($user->role === 'teacher') {
             $students = Student::paginate(10);
             $maintitle = 'All Students (Readonly)';
-            $myClassroom = $user->teacher->classroom ?? null;
         }
 
         if ($request->filled('searchStudent')) {
@@ -28,7 +27,6 @@ class StudentController extends Controller
         return view('students.index', [
             'students' => $students,
             'maintitle' => $maintitle,
-            'myClassroom' => $myClassroom ?? null,
         ]);
     }
 
