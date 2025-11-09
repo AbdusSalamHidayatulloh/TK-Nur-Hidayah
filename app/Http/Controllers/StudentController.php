@@ -15,7 +15,7 @@ class StudentController extends Controller
         if ($user->role === 'admin') {
             $students = Student::paginate(10);
             $maintitle = 'All Students';
-        } elseif($user->role === 'teacher') {
+        } elseif ($user->role === 'teacher') {
             $students = Student::paginate(10);
             $maintitle = 'All Students (Readonly)';
             $myClassroom = $user->teacher->classroom ?? null;
@@ -32,58 +32,21 @@ class StudentController extends Controller
         ]);
     }
 
-    public function assignStudentToClassroom(Request $request, $studentId)
+    public function addStudent(StudentRequest $request)
     {
-        $user = $request->user();
-        $student = Student::findOrFail($studentId);
-
-        if ($user->role === 'teacher') {
-            $teacherClassroom = $user->teacher->classroom;
-            if (!$teacherClassroom) abort(403, 'No classroom is assigned');
-            $student->classroom_id = $teacherClassroom->id;
-        } elseif ($user->role === 'admin') {
-            $student->classroom_id = $request->classroom_id;
-        }
-
-        $student->save();
-
-        return back()->with('success', 'Student assigned to the classroom');
-    }
-
-    public function removeFromClassroom(Request $request, $studentId)
-    {
-        $user = $request->user();
-        $student = Student::findOrFail($studentId);
-        if ($user->role === 'teacher') {
-            if ($student->classroom->teacher_id !== $user->teacher->id) {
-                abort(403, 'Unauthorized');
-            }
-            $student->classroom_id = null;
-        } elseif ($user->role === 'admin') {
-            $student->classroom_id = null;
-        };
-
-        $student->save();
-
-        return back()->with('success', 'Student removed from the classroom');
-    }
-    
-    public function addStudent(StudentRequest $request, $studentId) {
-        $user = $request->user();
-        if($user->role === 'admin') {
-            $validateData = $request->validate($request->rulesForCreate());
-            Student::create([
-                'name' => $validateData['name'],
-                'birthdate' => $validateData['birthdate'],
-                'student_image' => $validateData['student_image']
-            ]);
-        }
+        $validateData = $request->validate($request->rulesForCreate());
+        Student::create([
+            'name' => $validateData['name'],
+            'birthdate' => $validateData['birthdate'],
+            'student_image' => $validateData['student_image']
+        ]);
         return back()->with('Success', 'A student has been created');
     }
 
-    public function deleteStudent(StudentRequest $request, int $studentId) {
+    public function deleteStudent(StudentRequest $request, int $studentId)
+    {
         $studentSelected = Student::findOrFail($studentId);
-        if($request->role !== 'admin') {
+        if ($request->role !== 'admin') {
             abort(400, 'Unauthorized access of deleting student data');
         }
 
@@ -92,12 +55,13 @@ class StudentController extends Controller
         return back()->with('Success', 'Student has been deleted');
     }
 
-    public function updateStudent(StudentRequest $request, int $studentId) {
+    public function updateStudent(StudentRequest $request, int $studentId)
+    {
         $currentUser = $request->user();
-        if($currentUser === 'admin') {
+        if ($currentUser === 'admin') {
             $validateData = $request->validate($request->rulesForUpdate($studentId));
             $studentfind = Student::findOrFail($studentId);
-            
+
             $studentfind->update([
                 'name' => $validateData['name'] ?? $studentfind->name,
                 'birthdate' => $validateData['birthdate'] ?? $studentfind->birthdate,

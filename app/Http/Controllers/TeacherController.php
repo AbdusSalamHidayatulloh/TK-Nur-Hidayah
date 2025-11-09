@@ -38,7 +38,6 @@ class TeacherController extends Controller
             'sitename' => $teacher->user->name,
             'maintitle' => $teacher->user->name."'s Data",
             'teacher' => $teacher,
-            'classroom' => $teacher->classrooms?->name
         ]);
     }
 
