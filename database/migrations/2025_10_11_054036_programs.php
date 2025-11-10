@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('image_path');
+            $table->strinf('date_taken');
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->timestamps();
         });

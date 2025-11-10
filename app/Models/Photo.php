@@ -10,6 +10,7 @@ class Photo extends Model
     protected $fillable = [
         'title',
         'image_path',
+        'date_taken',
         'event_id'
     ];
 

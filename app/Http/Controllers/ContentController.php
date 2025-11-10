@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PhotoRequest;
 use App\Models\Event;
 use App\Models\Photo;
 use App\Models\Facility;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ContentController extends Controller
 {
@@ -34,7 +36,23 @@ class ContentController extends Controller
         ]);
     }
 
-    public function addPhoto(Event $event) {
-        //Logic for add photos
+    public function addPhoto(PhotoRequest $request ,Event $event) {
+        $request->validate($request->rules());
+        foreach($request->file('photos') as $photo) {
+            $path = $photo->store('eventImage', 'public');
+            $event->photos()->create([
+                'path' => $path,
+                'taken_at' => $request->input('taken_at')
+            ]);
+        }
+        return redirect()->back()->with('Success', 'Photos added successfully to the event');
+    }
+
+    public function deletePhoto(Photo $photo) {
+        if($photo->path && Storage::disk('public')->exists($photo->path)) {
+            Storage::disk('public')->delete($photo->path);
+        }
+        $photo->delete();
+        return back()->with('Success', 'Photo deleted successfully!');
     }
 }
