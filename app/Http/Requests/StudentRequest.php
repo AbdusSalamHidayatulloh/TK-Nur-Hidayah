@@ -16,6 +16,19 @@ class StudentRequest extends FormRequest
         return Auth::check() && in_array(Auth::user()->role, ['admin', 'teacher']);
     }
 
+    public function rules(): array
+    {
+        if ($this->isMethod('post')) {
+            return $this->rulesForCreate();
+        }
+
+        if ($this->isMethod('put')) {
+            return $this->rulesForUpdate();
+        }
+
+        return [];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +37,7 @@ class StudentRequest extends FormRequest
     public function rulesForCreate(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string',
             'birthdate' => 'required|date',
             'image' => 'nullable|image|max:2048',
         ];
@@ -33,7 +46,7 @@ class StudentRequest extends FormRequest
     public function rulesForUpdate(): array
     {
         return [
-            'name' => 'sometimes|string|max:255',
+            'name' => 'sometimes|string',
             'birthdate' => 'sometimes|date',
             'image' => 'nullable|image|max:2048',
         ];

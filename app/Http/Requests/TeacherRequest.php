@@ -16,12 +16,25 @@ class TeacherRequest extends FormRequest
         return Auth::check() && in_array(Auth::user()->role, ['admin', 'teacher']);
     }
 
+    public function rules(): array
+    {
+        if ($this->isMethod('post')) {
+            return $this->rulesForCreate();
+        }
+
+        if ($this->isMethod('put')) {
+            return $this->rulesForUpdate();
+        }
+
+        return [];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rulesForUpdate($userId): array
+    public function rulesForUpdate(): array
     {
         //mengembalikan struktur db
         return [
