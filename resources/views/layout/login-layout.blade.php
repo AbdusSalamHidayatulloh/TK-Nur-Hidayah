@@ -19,16 +19,18 @@
     <title>@yield('title')</title>
 </head>
 
-<body class="d-flex flex-column overflow-x-hidden min-vh-100">
-    @include('component.static-layout.navbar')
+<body class="d-flex flex-column overflow-hidden min-vh-100">
+    @include('component.portal-layout.navbar')
 
-    @include('component.static-layout.mobile-menu')
+    @include('component.portal-layout.mobile-menu')
 
     <!-- For the navbar under the header -->
     <main class="z-0" style="padding-top: 70px; padding-bottom: 50px;">
         @yield('mainContent')
     </main>
-    @include('component.static-layout.footer')
+
+    @include('component.portal-layout.footer')
+    
     <script src="/utility.js"></script>
     <!-- For Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
