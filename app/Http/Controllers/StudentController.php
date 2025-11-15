@@ -10,29 +10,30 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        $user = $request->user();
-
-        if ($user->role === 'admin') {
-            $students = Student::paginate(10);
-            $maintitle = 'All Students';
-        } elseif ($user->role === 'teacher') {
-            $students = Student::paginate(10);
-            $maintitle = 'All Students (Readonly)';
+        if ($request->has('searchStudent')) {
+            return view('students.index', [
+                'sitename'   => $request->searchStudent,
+                'maintitle'  => 'Searched Student: ' . $request->searchStudent,
+                'students'   => Student::where('name', 'like', '%' . $request->searchStudent . '%')
+                    ->paginate(10)
+                    ->withQueryString(),
+            ]);
+        } else {
+            return view('students.index', [
+                'sitename'   => 'All Students',
+                'maintitle'  => 'All Students',
+                'students'   => Student::paginate(10)
+            ]);
         }
-
-        if ($request->filled('searchStudent')) {
-            $students = $students->where('name', 'like', '%' . $request->searchStudent . '%');
-        }
-
-        return view('students.index', [
-            'students' => $students,
-            'maintitle' => $maintitle,
-        ]);
     }
 
     public function addStudent(StudentRequest $request)
     {
-        $validateData = $request->validate($request->rulesForCreate());
+        $currentUser = $request->user();
+        if ($currentUser->role === 'teacher') {
+            abort(403, 'Unauthorized access of deleting student data');
+        }
+        $validateData = $request->validate();
         Student::create([
             'name' => $validateData['name'],
             'birthdate' => $validateData['birthdate'],
@@ -43,9 +44,10 @@ class StudentController extends Controller
 
     public function deleteStudent(StudentRequest $request, int $studentId)
     {
+        $currentUser = $request->user();
         $studentSelected = Student::findOrFail($studentId);
-        if ($request->role !== 'admin') {
-            abort(400, 'Unauthorized access of deleting student data');
+        if ($currentUser->role === 'teacher') {
+            abort(403, 'Unauthorized access of deleting student data');
         }
 
         $studentSelected->delete();
@@ -56,8 +58,8 @@ class StudentController extends Controller
     public function updateStudent(StudentRequest $request, int $studentId)
     {
         $currentUser = $request->user();
-        if ($currentUser === 'admin') {
-            $validateData = $request->validate($request->rulesForUpdate($studentId));
+        if ($currentUser->role === 'admin') {
+            $validateData = $request->validate();
             $studentfind = Student::findOrFail($studentId);
 
             $studentfind->update([

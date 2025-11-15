@@ -14,14 +14,14 @@ class EventController extends Controller
                 'sitename' => $request->eventSearch,
                 'maintitle' => 'Event Searched: '.$request->eventSearch,
                 'events' => Event::where('event_name', 'like', '%'.$request->eventSearch.'%')
-                ->paginate(4)
+                ->paginate(6)
                 ->withQueryString(),
             ]);
         } else {
             return view('portal.event', [
                 'sitename' => 'Event TK',
                 'maintitle' => 'Event TK Nur Hidayah',
-                'events' => Event::paginate(4)
+                'events' => Event::paginate(6)
             ]);
         }
     }
@@ -47,7 +47,7 @@ class EventController extends Controller
         $user = $request->user();
         if($user->role === 'admin') {
             $event = Event::findOrFail($eventId);
-            $event::delete($eventId);
+            $event->delete();
             return redirect()->back()->with('Success', 'an event has already been deleted succesfully');
         } else {
             abort('403', 'Unauthorized Accesss');
@@ -59,7 +59,7 @@ class EventController extends Controller
         if($user->role === 'admin') {
             $validateData = $request->validate($request->rules());
             $event = Event::findOrFail($eventId);
-            Event::update([
+            $event->update([
                 'event_name' => $validateData['event_name'] ?? $event->event_name,
                 'event_date_start' => $validateData['event_date_start'] ?? $event->event_date_start,
                 'event_date_end' => $validateData['event_date_end'] ?? $event->event_date_end,

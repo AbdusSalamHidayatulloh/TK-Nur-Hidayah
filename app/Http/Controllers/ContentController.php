@@ -30,15 +30,19 @@ class ContentController extends Controller
         $event->load('photos');
 
         return view('portal.event-gallery', [
-            'sitename' => 'Event TK Nur Hidayah',      
+            'sitename' => 'Event TK Nur Hidayah',
             'maintitle' => $event->event_name,
             'event' => $event
         ]);
     }
 
-    public function addPhoto(PhotoRequest $request ,Event $event) {
-        $request->validate($request->rules());
-        foreach($request->file('photos') as $photo) {
+    public function addPhoto(PhotoRequest $request, Event $event)
+    {
+        if (!$request->hasFile('photos')) {
+            return redirect()->back()->withErrors('No photos uploaded');
+        }
+        $request->validated();
+        foreach ($request->file('photos') as $photo) {
             $path = $photo->store('eventImage', 'public');
             $event->photos()->create([
                 'path' => $path,
@@ -48,8 +52,12 @@ class ContentController extends Controller
         return redirect()->back()->with('Success', 'Photos added successfully to the event');
     }
 
-    public function deletePhoto(Photo $photo) {
-        if($photo->path && Storage::disk('public')->exists($photo->path)) {
+    public function deletePhoto(PhotoRequest $request, Photo $photo)
+    {
+        if ($request->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        if ($photo->path && Storage::disk('public')->exists($photo->path)) {
             Storage::disk('public')->delete($photo->path);
         }
         $photo->delete();

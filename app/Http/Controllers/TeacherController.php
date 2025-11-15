@@ -18,7 +18,7 @@ class TeacherController extends Controller
 
     public function indexTeacher(Request $request)
     {
-        if ($request->has('teacherSearch')) {
+        if ($request->filled('teacherSearch')) {
             return view('teacher', [
                 'sitename' => $request->teacherSearch,
                 'maintitle' => 'Searched Murid: ' . $request->teacherSearch,
@@ -48,7 +48,7 @@ class TeacherController extends Controller
     {
         $user = $request->user();
         if ($user->role === 'admin') {
-            $validateData = $request->validate($request->rulesForCreate());
+            $validateData = $request->validated();
 
             $newUser = User::create([
                 'name' => $validateData['name'],
@@ -87,8 +87,8 @@ class TeacherController extends Controller
     public function updateTeacher(TeacherRequest $request, int $userId)
     {
         $currentUser = $request->user();
-        if ($currentUser->role === 'admin') {
-            $validateData = $request->validate($request->rulesForUpdate($userId));
+        if ($currentUser->role === 'admin' && $currentUser->id !== $userId) {
+            $validateData = $request->validated();
             $user = User::findOrFail($userId);
             $teacher = $user->teacher;
 
@@ -112,9 +112,7 @@ class TeacherController extends Controller
 
             $user->update([
                 'name' => $validateData['name'] ?? $user->name,
-                'password' =>
-                //Check if there's a changes in the password field
-                !empty($validateData['password'])
+                'password' => isset($validateData['password'])
                     ? bcrypt($validateData['password'])
                     : $user->password,
             ]);
