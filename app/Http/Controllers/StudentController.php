@@ -10,19 +10,19 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->has('searchStudent')) {
-            return view('students.index', [
+        if ($request->filled('searchStudent')) {
+            return view('portal.student-list', [
                 'sitename'   => $request->searchStudent,
-                'maintitle'  => 'Searched Student: ' . $request->searchStudent,
+                'maintitle'  => 'Murid Dicari: ' . $request->searchStudent,
                 'students'   => Student::where('name', 'like', '%' . $request->searchStudent . '%')
-                    ->paginate(10)
+                    ->paginate(8)
                     ->withQueryString(),
             ]);
         } else {
-            return view('students.index', [
-                'sitename'   => 'All Students',
-                'maintitle'  => 'All Students',
-                'students'   => Student::paginate(10)
+            return view('portal.student-list', [
+                'sitename'   => 'Semua Murid',
+                'maintitle'  => 'Semua Murid',
+                'students'   => Student::paginate(8)
             ]);
         }
     }
@@ -33,7 +33,8 @@ class StudentController extends Controller
         if ($currentUser->role === 'teacher') {
             abort(403, 'Unauthorized access of deleting student data');
         }
-        $validateData = $request->validate();
+        $validateData = $request->validated();
+        $path = $request->file('student_image')->store('students', 'public');
         Student::create([
             'name' => $validateData['name'],
             'birthdate' => $validateData['birthdate'],
@@ -59,27 +60,26 @@ class StudentController extends Controller
     {
         $currentUser = $request->user();
         if ($currentUser->role === 'admin') {
-            $validateData = $request->validate();
+            $validateData = $request->validated();
             $studentfind = Student::findOrFail($studentId);
 
             $studentfind->update([
                 'name' => $validateData['name'] ?? $studentfind->name,
-                'birthdate' => $validateData['birthdate'] ?? $studentfind->birthdate,
                 'student_image' => $validateData['student_image'] ?? $studentfind->student_image
             ]);
 
             return back()->with('Success', 'Student has been updated');
         } elseif ($currentUser === 'teacher') {
-            abort(400, "Unauthorized access");
+            abort(403, "Unauthorized access");
         }
     }
 
-    public function showStudent(Student $student)
+    public function showStudent(Student $studentId)
     {
-        return view('show-student', [
-            'sitename' => $student['name'],
-            'maintitle' => 'Student: ' . $student['name'],
-            'student' => $student
+        return view('portal.show-student', [
+            'sitename' => $studentId['name'],
+            'maintitle' => 'Student: ' . $studentId['name'],
+            'student' => $studentId
         ]);
     }
 }
