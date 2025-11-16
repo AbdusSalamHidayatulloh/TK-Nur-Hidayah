@@ -34,11 +34,11 @@ class StudentController extends Controller
             abort(403, 'Unauthorized access of deleting student data');
         }
         $validateData = $request->validated();
-        $path = $request->file('student_image')->store('students', 'public');
+        $path = $request->file('image')->store('students', 'public');
         Student::create([
             'name' => $validateData['name'],
             'birthdate' => $validateData['birthdate'],
-            'student_image' => $validateData['student_image']
+            'image' => $path
         ]);
         return back()->with('Success', 'A student has been created');
     }
@@ -55,23 +55,37 @@ class StudentController extends Controller
 
         return back()->with('Success', 'Student has been deleted');
     }
-
+    public function editStudent(Student $studentId)
+    {
+        return view('portal.student-edit', [
+            'sitename' => 'Edit ' . $studentId->name,
+            'maintitle' => 'Edit Student: ' . $studentId->name,
+            'student' => $studentId
+        ]);
+    }
     public function updateStudent(StudentRequest $request, int $studentId)
     {
         $currentUser = $request->user();
-        if ($currentUser->role === 'admin') {
-            $validateData = $request->validated();
-            $studentfind = Student::findOrFail($studentId);
-
-            $studentfind->update([
-                'name' => $validateData['name'] ?? $studentfind->name,
-                'student_image' => $validateData['student_image'] ?? $studentfind->student_image
-            ]);
-
-            return back()->with('Success', 'Student has been updated');
-        } elseif ($currentUser === 'teacher') {
+        if ($currentUser->role !== 'admin') {
             abort(403, "Unauthorized access");
         }
+
+        $validateData = $request->validated();
+        $student = Student::findOrFail($studentId);
+
+        $updateData = [
+            'name' => $validateData['name'] ?? $student->name,
+            'birthdate' => $validateData['birthdate'] ?? $student->birthdate,
+        ];
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('students', 'public');
+            $updateData['image'] = $path;
+        }
+
+        $student->update($updateData);
+
+        return redirect('/student-list')->with('Success', 'Student has been updated');
     }
 
     public function showStudent(Student $studentId)

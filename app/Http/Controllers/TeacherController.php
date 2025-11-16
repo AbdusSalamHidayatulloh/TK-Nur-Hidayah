@@ -16,6 +16,27 @@ class TeacherController extends Controller
         return view('static.about-us', compact('teachers'));
     }
 
+    public function listTeachers(Request $request)
+    {
+        if ($request->filled('searchTeacher')) {
+            return view('portal.teacher-list', [
+                'sitename'   => $request->searchTeacher,
+                'maintitle'  => 'Guru Dicari: ' . $request->searchTeacher,
+                'teachers'   => Teacher::whereHas('user', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->searchTeacher . '%');
+                })
+                    ->paginate(10)
+                    ->withQueryString(),
+            ]);
+        } else {
+            return view('portal.teacher-list', [
+                'sitename'   => 'Semua Guru',
+                'maintitle'  => 'Semua Guru',
+                'teachers'   => Teacher::paginate(10)
+            ]);
+        }
+    }
+
     public function indexTeacher(Request $request)
     {
         if ($request->filled('teacherSearch')) {
@@ -37,7 +58,7 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
-        return view('teacher-profile', [
+        return view('portal.show-teacher', [
             'sitename' => $teacher->user->name,
             'maintitle' => $teacher->user->name . "'s Data",
             'teacher' => $teacher,
@@ -72,7 +93,6 @@ class TeacherController extends Controller
     {
         $user = $request->user();
         if ($user->role === 'admin') {
-            //Find the teacher
             $teacherUser = User::findOrFail($userId);
 
             if ($teacherUser->role !== 'teacher') {
@@ -83,11 +103,18 @@ class TeacherController extends Controller
         }
         abort(403, 'Unauthorized Access');
     }
-
+    public function editTeacher(Teacher $teacher)
+    {
+        return view('portal.teacher-edit', [
+            'sitename' => 'Edit ' . $teacher->user->name,
+            'maintitle' => 'Edit Teacher: ' . $teacher->user->name,
+            'teacher' => $teacher
+        ]);
+    }
     public function updateTeacher(TeacherRequest $request, int $userId)
     {
         $currentUser = $request->user();
-        if ($currentUser->role === 'admin' && $currentUser->id !== $userId) {
+        if ($currentUser->role === 'admin') {
             $validateData = $request->validated();
             $user = User::findOrFail($userId);
             $teacher = $user->teacher;
@@ -95,33 +122,24 @@ class TeacherController extends Controller
             $user->update([
                 'name' => $validateData['name'] ?? $user->name,
                 'email' => $validateData['email'] ?? $user->email,
-                'role' => $validateData['role'] ?? $user->role
             ]);
 
-            $teacher->update([
+            $updateData = [
                 'position' => $validateData['position'] ?? $teacher->position,
-                'image' => $validateData['image'] ?? $teacher->image,
-                'birthdate' => $validateData['birthdate'] ?? $teacher->birthdate
-            ]);
+                'birthdate' => $validateData['birthdate'] ?? $teacher->birthdate,
+            ];
 
-            return redirect()->back()->with('Success', 'Admin change a Teacher profile');
-        } elseif ($currentUser->role === 'teacher') {
-            $validateData = $request->validated($request->rulesForUpdate($userId));
-            $user = User::findOrFail($userId);
-            $teacher = $user->teacher;
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('teachers', 'public');
+                $updateData['image'] = $path;
+            }
 
-            $user->update([
-                'name' => $validateData['name'] ?? $user->name,
-                'password' => isset($validateData['password'])
-                    ? bcrypt($validateData['password'])
-                    : $user->password,
-            ]);
+            $teacher->update($updateData);
 
-            $teacher->update([
-                'image' => $validateData['image'] ?? $teacher->image,
-            ]);
-
-            return redirect()->back()->with('Success', 'You have change your profile, teacher');
+            return redirect('/teacher-list')->with('Success', 'Teacher has been updated');
         }
+
+        abort(403, "Unauthorized access");
     }
 }

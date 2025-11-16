@@ -29,7 +29,7 @@ class ContentController extends Controller
     {
         $event->load('photos');
 
-        return view('portal.event-gallery', [
+        return view('portal.show-event', [
             'sitename' => 'Event TK Nur Hidayah',
             'maintitle' => $event->event_name,
             'event' => $event
@@ -41,15 +41,19 @@ class ContentController extends Controller
         if (!$request->hasFile('photos')) {
             return redirect()->back()->withErrors('No photos uploaded');
         }
+
         $request->validated();
+
         foreach ($request->file('photos') as $photo) {
-            $path = $photo->store('eventImage', 'public');
+            $path = $photo->store('events', 'public');
             $event->photos()->create([
-                'path' => $path,
-                'taken_at' => $request->input('taken_at')
+                'title' => $event->event_name,
+                'image_path' => $path,
+                'date_taken' => now()
             ]);
         }
-        return redirect()->back()->with('Success', 'Photos added successfully to the event');
+
+        return redirect('/event/' . $event->id)->with('Success', 'Photos added successfully to the event');
     }
 
     public function deletePhoto(PhotoRequest $request, Photo $photo)
@@ -62,5 +66,31 @@ class ContentController extends Controller
         }
         $photo->delete();
         return back()->with('Success', 'Photo deleted successfully!');
+    }
+
+    public function updatePhoto(PhotoRequest $request, Photo $photo)
+    {
+        if ($request->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        $validateData = $request->validated();
+
+        if ($request->hasFile('image_path')) {
+            if ($photo->image_path && Storage::disk('public')->exists($photo->image_path)) {
+                Storage::disk('public')->delete($photo->image_path);
+            }
+
+            $path = $request->file('image_path')->store('events', 'public');
+            $photo->image_path = $path;
+        }
+
+        $photo->update([
+            'title' => $validateData['title'] ?? $photo->title,
+            'date_taken' => $validateData['date_taken'] ?? $photo->date_taken,
+            'image_path' => $photo->image_path
+        ]);
+
+        return back()->with('Success', 'Photo updated successfully!');
     }
 }

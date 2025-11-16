@@ -1,0 +1,71 @@
+@extends('layout.login-layout')
+@section('title', $sitename)
+@section('mainContent')
+    <div class="container text-center mt-5 p-4">
+        <h1 class="fw-bold">{{ $maintitle }}</h1>
+    </div>
+    <div class="container mt-2 mb-2">
+        <form action="/student-list" method="GET" class="form-inline w-100 d-flex gap-2" id="searchForm">
+            <input type="search" placeholder="Search" name="searchStudent" class="form-control"
+                value="{{ request('searchStudent') }}" id="searchInput">
+            <button type="submit" class="btn btn-outline-success">Search</button>
+            <button type="button" class="btn btn-outline-secondary"
+                onclick="document.getElementById('searchInput').value = ''; document.getElementById('searchForm').submit();">Clear</button>
+        </form>
+    </div>
+    @if (session('Success'))
+        <div class="container mt-2 mb-2">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('Success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+    @if (auth()->user()->role === 'admin')
+        <div class="container mt-3 mb-3">
+            <a href="/student-create" class="btn btn-success">Add New Student</a>
+        </div>
+    @endif
+    <div class="container d-flex mt-2 justify-content-center">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama Murid</th>
+                    <th>Tanggal Lahir</th>
+                    @if (auth()->user()->role === 'admin')
+                        <th>Aksi</th>
+                    @endif
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($students as $st)
+                    <tr>
+                        <td scope="row">{{ $loop->iteration }}</td>
+                        <td><a href="/student/{{ $st->id }}">{{ $st->name }}</a></td>
+                        <td>{{ $st->birthdate }}</td>
+                        @if (auth()->user()->role === 'admin')
+                            <td>
+                                <a href="/student-edit/{{ $st->id }}" class="btn btn-primary">Edit</a>
+                                <form action="/student-delete/{{ $st->id }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        @endif
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            Tidak ada murid yang tersedia
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+        {{ $students->links() }}
+    </div>
+@endsection

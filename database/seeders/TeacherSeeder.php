@@ -14,7 +14,7 @@ class TeacherSeeder extends Seeder
      */
     public function run(): void
     {
-        $annaUser = User::where('email', 'anna@nur.hidayah.com')->first();
+        $annaUser = User::where('email', 'Anna@nur.hidayah.com')->first();
         Teacher::create([
             'user_id' => $annaUser->id,
             'position' => 'Guru Kelas A',
@@ -29,7 +29,7 @@ class TeacherSeeder extends Seeder
             'birthdate' => "12/03/1998",
             'image' => '/image/teacherImage/guru2.jpg'
         ]);
-        $joelUser = User::where('email', 'joel@nur.hidayah.com')->first();
+        $joelUser = User::where('email', 'Joel@nur.hidayah.com')->first();
         Teacher::create([
             'user_id' => $joelUser->id,
             'position' => 'Guru Kelas 2C',
