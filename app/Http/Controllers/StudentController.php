@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
 use App\Models\Student;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -51,9 +52,14 @@ class StudentController extends Controller
             abort(403, 'Unauthorized access of deleting student data');
         }
 
+        if ($studentSelected->image) {
+            Storage::disk('public')->delete($studentSelected->image);
+        }
+
+
         $studentSelected->delete();
 
-        return back()->with('Success', 'Student has been deleted');
+        return redirect()->back()->with('Success', 'Student has been deleted');
     }
     public function editStudent(Student $studentId)
     {
@@ -88,12 +94,43 @@ class StudentController extends Controller
         return redirect('/student-list')->with('Success', 'Student has been updated');
     }
 
+    private function handleImageUpload(Request $request, $student)
+    {
+        if ($request->hasFile('image')) {
+            if ($student->image) {
+                Storage::disk('public')->delete($student->image);
+            }
+            return $request->file('image')->store('image/studentimage/', 'public');
+        }
+        return $student->image;
+    }
+
     public function showStudent(Student $studentId)
     {
         return view('portal.show-student', [
             'sitename' => $studentId['name'],
             'maintitle' => 'Student: ' . $studentId['name'],
             'student' => $studentId
+        ]);
+    }
+
+    //take data for update & create
+    public function create()
+    {
+        return view('portal.student-form', [
+            'student' => null,
+            'isEdit' => false,
+            'sitename' => 'Create new student',
+        ]);
+    }
+
+    public function edit($studentId)
+    {
+        $student = Student::findOrFail($studentId);
+        return view('portal.student-form', [
+            'student' => $student,
+            'isEdit' => true,
+            'sitename' => 'Edit a student',
         ]);
     }
 }

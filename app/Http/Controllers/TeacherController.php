@@ -65,29 +65,29 @@ class TeacherController extends Controller
         ]);
     }
 
-    public function addTeacher(TeacherRequest $request)
-    {
-        $user = $request->user();
-        if ($user->role === 'admin') {
-            $validateData = $request->validated();
+    // public function addTeacher(TeacherRequest $request)
+    // {
+    //     $user = $request->user();
+    //     if ($user->role === 'admin') {
+    //         $validateData = $request->validated();
 
-            $newUser = User::create([
-                'name' => $validateData['name'],
-                'email' => $validateData['email'],
-                'password' => bcrypt($validateData['password']),
-                'role' => 'teacher'
-            ]);
+    //         $newUser = User::create([
+    //             'name' => $validateData['name'],
+    //             'email' => $validateData['email'],
+    //             'password' => bcrypt($validateData['password']),
+    //             'role' => 'teacher'
+    //         ]);
 
-            Teacher::create([
-                'user_id' => $newUser->id,
-                'position' => $validateData['position'],
-                'birthdate' => $validateData['birthdate']
-            ]);
-        } elseif ($user->role === 'teacher') {
-            abort(400, 'Unauthorized access');
-        }
-        return redirect()->back()->with('Success', 'You have added a new teacher');
-    }
+    //         Teacher::create([
+    //             'user_id' => $newUser->id,
+    //             'position' => $validateData['position'],
+    //             'birthdate' => $validateData['birthdate']
+    //         ]);
+    //     } elseif ($user->role === 'teacher') {
+    //         abort(400, 'Unauthorized access');
+    //     }
+    //     return redirect()->back()->with('Success', 'You have added a new teacher');
+    // }
 
     public function deleteTeacher(TeacherRequest $request, int $userId): RedirectResponse
     {
