@@ -5,10 +5,11 @@
         <h1 class="fw-bold">{{ $maintitle }}</h1>
     </div>
     <div class="container mt-2 mb-2">
-        <form action="/student-list" method="GET" class="form-inline w-100 d-flex gap-2">
+        <form action="/student-list" method="GET" class="form-inline w-100 d-flex flex-md-row flex-column gap-2">
             <input type="search" placeholder="Search" name="searchStudent" class="form-control">
-            <button type="submit" class="btn btn-outline-success">Search</button>
+            <button type="submit" class="btn btn-outline-success">Cari</button>
         </form>
+        <a href="/student-create" class="btn btn-outline-primary w-100 mt-2">Membuat Murid Baru</a>
     </div>
     <div class="container d-flex mt-2 justify-content-center">
         <table class="table table-bordered">

@@ -26,7 +26,14 @@ Route::get('/student-list', [StudentController::class, 'index']);
 
 Route::get('/student/{studentId}', [StudentController::class, 'showStudent']);
 
-//!DELETE NANTI SELESAI, UNTUK JADI ADMIN & GURU TANPA LOGIN, LANGSUNG!
+Route::delete('/student-delete/{studentId}', [StudentController::class, 'deleteStudent']);
+
+Route::get('/student-create', [StudentController::class, 'create']);
+Route::post('/student/create', [StudentController::class, 'addStudent']);
+
+Route::get('/student-edit/{studentId}', [StudentController::class, 'edit']);
+Route::put('/student/edit/{studentId}', [StudentController::class, 'updateStudent']);
+
 Route::get('/dev', function () {
     $fakeUser = User::where('role', 'admin')->first(); // Pilih user pertama (Admin)
     Auth::login($fakeUser); //Login sebagai Admin

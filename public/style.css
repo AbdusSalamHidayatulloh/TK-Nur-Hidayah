@@ -34,6 +34,7 @@ small {
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FAECE2;
 }
 
 /* ^ Essentials, for fonts and whole main ^ */
@@ -42,6 +43,7 @@ body {
   background: linear-gradient(135deg, #006400, #318135, #5a8f5d);
   border-top-left-radius: 1.5em;
   border-top-right-radius: 1.5em;
+  background-color: #FAECE2;
 }
 
 .bg-green-gradient-header {
@@ -120,3 +122,10 @@ main {
 }
 
 /* ^ For colors and other stuff like header, footer, etc ^ */
+
+.object-fit-cover {
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ^ For the other utility (like maybe image or custom text properties) ^ */
