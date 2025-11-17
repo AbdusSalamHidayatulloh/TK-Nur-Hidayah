@@ -16,14 +16,14 @@ class StudentController extends Controller
                 'sitename'   => $request->searchStudent,
                 'maintitle'  => 'Murid Dicari: ' . $request->searchStudent,
                 'students'   => Student::where('name', 'like', '%' . $request->searchStudent . '%')
-                    ->paginate(8)
+                    ->paginate(10)
                     ->withQueryString(),
             ]);
         } else {
             return view('portal.student-list', [
                 'sitename'   => 'Semua Murid',
                 'maintitle'  => 'Semua Murid',
-                'students'   => Student::paginate(8)
+                'students'   => Student::paginate(10)
             ]);
         }
     }
