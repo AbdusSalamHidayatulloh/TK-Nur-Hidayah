@@ -9,7 +9,9 @@
             <input type="search" placeholder="Search" name="searchStudent" class="form-control">
             <button type="submit" class="btn btn-outline-success">Cari</button>
         </form>
+        @if(auth()->user()->role === 'admin')
         <a href="/student-create" class="btn btn-outline-primary w-100 mt-2">Membuat Murid Baru</a>
+        @endif
     </div>
     <div class="container d-flex mt-2 justify-content-center">
         <table class="table table-bordered">
