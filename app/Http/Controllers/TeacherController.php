@@ -65,29 +65,38 @@ class TeacherController extends Controller
         ]);
     }
 
-    // public function addTeacher(TeacherRequest $request)
-    // {
-    //     $user = $request->user();
-    //     if ($user->role === 'admin') {
-    //         $validateData = $request->validated();
+    public function addTeacher(TeacherRequest $request)
+    {
+        $user = $request->user();
+        if ($user->role === 'admin') {
+            $validateData = $request->validated();
 
-    //         $newUser = User::create([
-    //             'name' => $validateData['name'],
-    //             'email' => $validateData['email'],
-    //             'password' => bcrypt($validateData['password']),
-    //             'role' => 'teacher'
-    //         ]);
+            $newUser = User::create([
+                'name' => $validateData['name'],
+                'email' => $validateData['email'],
+                'password' => bcrypt($validateData['password']),
+                'role' => 'teacher'
+            ]);
 
-    //         Teacher::create([
-    //             'user_id' => $newUser->id,
-    //             'position' => $validateData['position'],
-    //             'birthdate' => $validateData['birthdate']
-    //         ]);
-    //     } elseif ($user->role === 'teacher') {
-    //         abort(400, 'Unauthorized access');
-    //     }
-    //     return redirect()->back()->with('Success', 'You have added a new teacher');
-    // }
+            $imageData = [
+                'user_id' => $newUser->id,
+                'position' => $validateData['position'],
+                'birthdate' => $validateData['birthdate']
+            ];
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('teachers', 'public');
+                $imageData['image'] = $path;
+            }
+
+            Teacher::create($imageData);
+
+            return redirect('/teacher-list')->with('Success', 'Teacher has been created successfully');
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+    }
 
     public function deleteTeacher(TeacherRequest $request, int $userId): RedirectResponse
     {

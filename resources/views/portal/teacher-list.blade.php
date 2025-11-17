@@ -48,7 +48,7 @@
                         <td>{{ $teacher->birthdate }}</td>
                         @if (auth()->user()->role === 'admin')
                             <td>
-                                <a href="/teacher-edit/{{ $teacher->user->id }}" class="btn btn-primary">Edit</a>
+                                <a href="/teacher-edit/{{ $teacher->id }}" class="btn btn-primary">Edit</a>
                                 <form action="/teacher-delete/{{ $teacher->user->id }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
