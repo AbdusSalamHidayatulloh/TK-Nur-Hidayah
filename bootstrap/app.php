@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
-            return response()->view('errors.custom', [
+            return response()->view('exception.custom', [
                 'code' => $e->getStatusCode(),
                 'message' => $e->getMessage()
             ], $e->getStatusCode());
