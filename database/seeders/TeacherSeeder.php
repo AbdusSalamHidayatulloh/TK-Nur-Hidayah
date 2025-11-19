@@ -29,6 +29,7 @@ class TeacherSeeder extends Seeder
             'birthdate' => "12/03/1998",
             'image' => '/image/teacherImage/guru2.jpg'
         ]);
+        
         $joelUser = User::where('email', 'Joel@nur.hidayah.com')->first();
         Teacher::create([
             'user_id' => $joelUser->id,
