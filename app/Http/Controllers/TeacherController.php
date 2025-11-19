@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TeacherRequest;
 use App\Models\Teacher;
+use App\Http\Requests\TeacherRequest;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -19,7 +19,7 @@ class TeacherController extends Controller
     public function indexTeacher(Request $request)
     {
         if ($request->filled('teacherSearch')) {
-            return view('teacher', [
+            return view('portal.teacher-list', [
                 'sitename' => $request->teacherSearch,
                 'maintitle' => 'Searched Murid: ' . $request->teacherSearch,
                 'teachers' => Teacher::where('name', 'like', '%' . $request->teacherSearch . '%')
@@ -27,7 +27,7 @@ class TeacherController extends Controller
                     ->withQueryString(),
             ]);
         } else {
-            return view('teacher', [
+            return view('portal.teacher-list', [
                 'sitename' => $request->teacherSearch,
                 'maintitle' => 'Searched Murid: ' . $request->teacherSearch,
                 'teachers' => Teacher::paginate(10)
@@ -35,94 +35,151 @@ class TeacherController extends Controller
         }
     }
 
-    //!WILL BE USED LATER IF THE CLIENTS ASK!
-    // public function show(Teacher $teacher)
-    // {
-    //     return view('teacher-profile', [
-    //         'sitename' => $teacher->user->name,
-    //         'maintitle' => $teacher->user->name . "'s Data",
-    //         'teacher' => $teacher,
-    //     ]);
-    // }
+    public function show(Teacher $teacher)
+    {
+        return view('portal.teacher', [
+            'sitename' => $teacher->user->name,
+            'maintitle' => $teacher->user->name . "'s Data",
+            'teacher' => $teacher,
+        ]);
+    }
 
-    // public function addTeacher(TeacherRequest $request)
-    // {
-    //     $user = $request->user();
-    //     if ($user->role === 'admin') {
-    //         $validateData = $request->validated();
+    public function addTeacher(TeacherRequest $request)
+    {
+        $user = $request->user();
+        if ($user->role === 'admin') {
+            $validateData = $request->validated();
 
-    //         $newUser = User::create([
-    //             'name' => $validateData['name'],
-    //             'email' => $validateData['email'],
-    //             'password' => bcrypt($validateData['password']),
-    //             'role' => 'teacher'
-    //         ]);
+            $newUser = User::create([
+                'name' => $validateData['name'],
+                'email' => $validateData['email'],
+                'password' => bcrypt($validateData['password']),
+                'role' => 'teacher'
+            ]);
 
-    //         Teacher::create([
-    //             'user_id' => $newUser->id,
-    //             'position' => $validateData['position'],
-    //             'birthdate' => $validateData['birthdate']
-    //         ]);
-    //     } elseif ($user->role === 'teacher') {
-    //         abort(400, 'Unauthorized access');
-    //     }
-    //     return redirect()->back()->with('Success', 'You have added a new teacher');
-    // }
+            //We create an emppty teacher model instead of ::create because
+            //functionHandleImageUpload will be used repeatedly
 
-    // public function deleteTeacher(TeacherRequest $request, int $userId): RedirectResponse
-    // {
-    //     $user = $request->user();
-    //     if ($user->role === 'admin') {
-    //         //Find the teacher
-    //         $teacherUser = User::findOrFail($userId);
+            //Lebih pendeknya, ::create tapi manual karena image pake function untuk handle gambar
+            $teacherNew = new Teacher();
+            $teacherNew->user_id = $newUser->id;
+            $teacherNew->position = $validateData['position'];
+            $teacherNew->birthdate = $validateData['birthdate'];
+            $teacherNew->image = $this->functionHandleImageUpload($request, $teacherNew);
+            $teacherNew->save();
+        } elseif ($user->role === 'teacher') {
+            abort(403, 'Unauthorized access');
+        }
+        return redirect('/teacher-list')->with('Success', 'You have added a new teacher');
+    }
 
-    //         if ($teacherUser->role !== 'teacher') {
-    //             abort(403, 'Cannot delete a non teacher user (admin)');
-    //         }
-    //         $teacherUser->delete();
-    //         return redirect()->back()->with('Success', 'Teacher has been deleted');
-    //     }
-    //     abort(403, 'Unauthorized Access');
-    // }
+    public function deleteTeacher(TeacherRequest $request, Teacher $teacher)
+    {
+        $user = $request->user();
+        if ($user->role === 'admin') {
 
-    // public function updateTeacher(TeacherRequest $request, int $userId)
-    // {
-    //     $currentUser = $request->user();
-    //     if ($currentUser->role === 'admin' && $currentUser->id !== $userId) {
-    //         $validateData = $request->validated();
-    //         $user = User::findOrFail($userId);
-    //         $teacher = $user->teacher;
+            //Hapus gambar dari folder 
+            if($teacher->image) {
+                Storage::disk('public')->delete($teacher->image);
+            }
+            $teacher->delete();
+            return redirect('/teacher-list')->with('Success', 'Teacher has been deleted');
+        }
+        abort(403, 'Unauthorized Access');
+    }
 
-    //         $user->update([
-    //             'name' => $validateData['name'] ?? $user->name,
-    //             'email' => $validateData['email'] ?? $user->email,
-    //             'role' => $validateData['role'] ?? $user->role
-    //         ]);
+    public function updateTeacher(TeacherRequest $request, Teacher $teacher)
+    {
+        $currentUser = $request->user();
+        if ($currentUser->role === 'admin') {
+            $validateData = $request->validated();
+            $user = $teacher->user;
 
-    //         $teacher->update([
-    //             'position' => $validateData['position'] ?? $teacher->position,
-    //             'image' => $validateData['image'] ?? $teacher->image,
-    //             'birthdate' => $validateData['birthdate'] ?? $teacher->birthdate
-    //         ]);
+            $user->update([
+                'name' => $validateData['name'] ?? $user->name,
+                'email' => $validateData['email'] ?? $user->email,
+            ]);
 
-    //         return redirect()->back()->with('Success', 'Admin change a Teacher profile');
-    //     } elseif ($currentUser->role === 'teacher') {
-    //         $validateData = $request->validated($request->rulesForUpdate($userId));
-    //         $user = User::findOrFail($userId);
-    //         $teacher = $user->teacher;
+            $teacher->update([
+                'position' => $validateData['position'] ?? $teacher->position,
+                'birthdate' => $validateData['birthdate'] ?? $teacher->birthdate
+            ]);
+            $teacher->image = $this->functionHandleImageUpload($request, $teacher);
+            $teacher->save();
 
-    //         $user->update([
-    //             'name' => $validateData['name'] ?? $user->name,
-    //             'password' => isset($validateData['password'])
-    //                 ? bcrypt($validateData['password'])
-    //                 : $user->password,
-    //         ]);
+            return redirect('/teacher-list')->with('Success', 'Admin change a Teacher profile');
+        } elseif ($currentUser->role === 'teacher') {
+            $validateData = $request->validated();
+            $user = $teacher->user;
 
-    //         $teacher->update([
-    //             'image' => $validateData['image'] ?? $teacher->image,
-    //         ]);
+            $user->update([
+                'name' => $validateData['name'] ?? $user->name,
+                //!Password changes will be done separately
+                // 'password' => isset($validateData['password'])
+                //     ? bcrypt($validateData['password'])
+                //     : $user->password,
+            ]);
 
-    //         return redirect()->back()->with('Success', 'You have change your profile, teacher');
-    //     }
-    // }
+            $teacher->fill([
+                'image' => $validateData['image'] ?? $teacher->image,
+            ])->save();
+
+            return redirect('/teacher-list')->with('Success', 'You have change your profile, teacher');
+        }
+    }
+
+    public function create()
+    {
+        return view('portal.teacher-form', [
+            'teacher' => null,
+            'isEdit' => false,
+            'isEditPersonal' => false,
+            'sitename' => 'Create new teacher',
+        ]);
+    }
+
+    public function edit(Teacher $teacher)
+    {
+        return view('portal.teacher-form', [
+            'teacher' => $teacher,
+            'isEdit' => true,
+            'isEditPersonal' => false,
+            'sitename' => 'Edit a teacher',
+        ]);
+    }
+
+    public function editPersonal(Teacher $teacher)
+    {
+        return view('portal.teacher-form', [
+            'teacher' => $teacher,
+            'isEdit' => true,
+            'isEditPersonal' => true,
+            'sitename' => 'Edit a teacher',
+        ]);
+    }
+
+    /**
+     * Universal handle images that got uploaded or deleted
+     * @param request: flag any actions done (either C, U, D)
+     * @param teacher: indicate the data choosen
+     * **/ 
+    private function functionHandleImageUpload(Request $request, $teacher) {
+        //Check if the request sent has a file in it (name image)
+        if($request->hasFile('image')) {
+            //if there's an image, delete it from public then take the file path
+            if($teacher->image) {
+                Storage::disk('public')->delete($teacher->image);
+            }
+            /**
+            * If not, we store the data in the same file path we delete it
+            * @return type: string (filepath)
+            **/
+            return $request->file('image')->store('image/teacherimage/', 'public');
+        }
+        /**
+         * If it had an image, we and we don't things to it, we sent the data
+         * @return type: string (filepath)
+         * **/
+        return $teacher->image;
+    }
 }

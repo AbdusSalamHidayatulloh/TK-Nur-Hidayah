@@ -71,11 +71,10 @@ class StudentController extends Controller
             $validateData = $request->validated();
             $studentfind = Student::findOrFail($studentId);
 
-            $studentfind->image = $this->handleImageUpload($request, $studentfind);
-
-            if (isset($validateData['name'])) {
-                $studentfind->name = $validateData['name'];
-            }
+            $studentfind->fill([
+                'name' => $validateData['name'] ?? $studentfind->name,
+                'image' => $this->handleImageUpload($request, $studentfind)
+            ])->save();
 
             $studentfind->save();
 
@@ -105,7 +104,6 @@ class StudentController extends Controller
         ]);
     }
 
-    //take data for update & create
     public function create()
     {
         return view('portal.student-form', [
@@ -115,9 +113,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function edit($studentId)
-    {
-        $student = Student::findOrFail($studentId);
+    public function edit(Student $student){
         return view('portal.student-form', [
             'student' => $student,
             'isEdit' => true,
