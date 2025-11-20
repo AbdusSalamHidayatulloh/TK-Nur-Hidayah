@@ -21,7 +21,7 @@
             </div>
         @endif
 
-        <form action="/student-create" method="POST" enctype="multipart/form-data" class="w-50">
+        <form action="/student-create" method="POST" enctype="multipart/form-data" class="w-100">
             @csrf
 
             <div class="mb-3">

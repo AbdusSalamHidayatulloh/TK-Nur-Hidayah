@@ -24,7 +24,7 @@
     @endif
     @if (auth()->user()->role === 'admin')
         <div class="container mt-3 mb-3">
-            <a href="/student-create" class="btn btn-success">Add New Student</a>
+            <a href="/student-create" class="btn btn-success w-100">Add New Student</a>
         </div>
     @endif
     <div class="container d-flex mt-2 justify-content-center">
@@ -46,7 +46,7 @@
                         <td><a href="/student/{{ $st->id }}">{{ $st->name }}</a></td>
                         <td>{{ $st->birthdate }}</td>
                         @if (auth()->user()->role === 'admin')
-                            <td>
+                            <td class="gap-1 d-flex flex-row">
                                 <a href="/student-edit/{{ $st->id }}" class="btn btn-primary">Edit</a>
                                 <form action="/student-delete/{{ $st->id }}" method="POST" style="display:inline;">
                                     @csrf

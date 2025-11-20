@@ -23,7 +23,7 @@
     @endif
     @if (auth()->user()?->role === 'admin')
         <div class="container mt-3 mb-3">
-            <a href="/event-create" class="btn btn-success">Add New Event</a>
+            <a href="/event-create" class="btn btn-success w-100">Add New Event</a>
         </div>
     @endif
     <div class="container d-flex mt-2 justify-content-center">
@@ -34,7 +34,6 @@
                     <th>Nama Event</th>
                     <th>Tanggal Mulai</th>
                     <th>Tanggal Berakhir</th>
-                    <th>Deskripsi</th>
                     @if (auth()->user()?->role === 'admin')
                         <th>Aksi</th>
                     @endif
@@ -47,7 +46,6 @@
                         <td><a href="/event/{{ $event->id }}">{{ $event->event_name }}</a></td>
                         <td>{{ $event->event_date_start }}</td>
                         <td>{{ $event->event_date_end }}</td>
-                        <td>{{ Str::limit($event->event_description, 50) }}</td>
                         @if (auth()->user()?->role === 'admin')
                             <td>
                                 <div class="d-flex gap-2">

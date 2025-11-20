@@ -7,7 +7,7 @@
 
     <div class="container mt-2 mb-2">
         <form 
-            action="{{ $isEdit ? url('teacher/edit/'.$teacher->id) : url('teacher/create') }}"
+            action="{{ $isEdit ? url('teacher/'.$teacher->id) : url('teacher/create') }}"
             method="POST"
             enctype="multipart/form-data">
         @csrf
@@ -65,13 +65,9 @@
                 @endif 
             </div>
 
-            <button type="submit" class="btn btn-success w-100">
+            <button type="submit" class="btn btn-success w-100" onclick="if(confirm('Apakah anda yakin?')) this.closest('form').submit();">
                 {{ $isEdit ? 'Simpan Perubahan' : 'Tambahkan Guru' }}
             </button>
-
-            @if($isEditPersonal)
-            <p>Ingin mengganti password? <a href="/teacher/password-change">tekan disini</a></p>
-            @endif
         </div>
         </form>
     </div>

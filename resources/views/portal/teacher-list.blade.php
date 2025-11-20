@@ -23,7 +23,7 @@
     @endif
     @if (auth()->user()->role === 'admin')
         <div class="container mt-3 mb-3">
-            <a href="/teacher-create" class="btn btn-success">Membuat Guru Baru</a>
+            <a href="/teacher-create" class="btn btn-success w-100">Membuat Guru Baru</a>
         </div>
     @endif
     <div class="container d-flex mt-2 justify-content-center">
@@ -33,7 +33,6 @@
                     <th>No.</th>
                     <th>Nama</th>
                     <th>Posisi</th>
-                    <th>Tanggal Lahir</th>
                     @if (auth()->user()->role === 'admin')
                         <th>Aksi</th>
                     @endif
@@ -45,16 +44,15 @@
                         <td scope="row">{{ $loop->iteration }}</td>
                         <td><a href="/teacher/{{ $te->id }}">{{ $te->user->name }}</a></td>
                         <td>{{ $te->position }}</td>
-                        <td>{{ $te->birthdate }}</td>
                         @if (auth()->user()->role === 'admin')
-                            <td>
+                            <td class="gap-1 d-flex flex-row">
                                 <a href="/teacher-edit/{{ $te->id }}" class="btn btn-primary">Edit</a>
                                 <form action="/teacher-delete/{{ $te->id }}" method="POST">
                                     {{-- Validasi aksi saat ditekan --}}
                                     @csrf
                                     {{-- Pake method delete --}}
                                     @method('DELETE')
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-danger" onclick="if(confirm('Delete this Teacher?')) this.closest('form').submit();">Delete</button>
                                 </form>
                             </td>
                         @endif

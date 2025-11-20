@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <form action="/event-create" method="POST" enctype="multipart/form-data" class="w-75">
+        <form action="/event-create" method="POST" enctype="multipart/form-data" class="w-100">
             @csrf
 
             <div class="mb-3">
@@ -52,7 +52,7 @@
             <div class="mb-3">
                 <label for="photos" class="form-label">Event Photos (Optional)</label>
                 <input type="file" class="form-control @error('photos') is-invalid @enderror" id="photos" name="photos[]" accept="image/*" multiple>
-                <small class="form-text text-muted">You can upload multiple images. You can also add photos later after creating the event.</small>
+                <small class="form-text text-muted">Anda bisa menambahkan gambar setelah membuat event ini.</small>
                 @error('photos')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
