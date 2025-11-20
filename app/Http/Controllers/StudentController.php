@@ -35,15 +35,13 @@ class StudentController extends Controller
             abort(403, 'Unauthorized access of deleting student data');
         }
         $validateData = $request->validated();
-        $student = new Student();
-
-        $student->name = $validateData['name'];
-        $student->birthdate = $validateData['birthdate'];
-        $student->image = $this->handleImageUpload($request, $student);
-        
-        $student->save();
-        
-        return redirect('/student-list')->with('Success', 'A student has been created');
+        $path = $request->file('image')->store('students', 'public');
+        Student::create([
+            'name' => $validateData['name'],
+            'birthdate' => $validateData['birthdate'],
+            'image' => $path
+        ]);
+        return back()->with('Success', 'A student has been created');
     }
 
     public function deleteStudent(StudentRequest $request, int $studentId)
@@ -63,7 +61,14 @@ class StudentController extends Controller
 
         return redirect()->back()->with('Success', 'Student has been deleted');
     }
-
+    public function editStudent(Student $studentId)
+    {
+        return view('portal.student-edit', [
+            'sitename' => 'Edit ' . $studentId->name,
+            'maintitle' => 'Edit Student: ' . $studentId->name,
+            'student' => $studentId
+        ]);
+    }
     public function updateStudent(StudentRequest $request, int $studentId)
     {
         $currentUser = $request->user();
@@ -76,12 +81,19 @@ class StudentController extends Controller
                 'image' => $this->handleImageUpload($request, $studentfind)
             ])->save();
 
-            $studentfind->save();
+        $updateData = [
+            'name' => $validateData['name'] ?? $student->name,
+            'birthdate' => $validateData['birthdate'] ?? $student->birthdate,
+        ];
 
-            return redirect('/student-list')->with('Success', 'Student has been updated');
-        } elseif ($currentUser->role === 'teacher') {
-            abort(403, "Unauthorized access, you're not admin");
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('students', 'public');
+            $updateData['image'] = $path;
         }
+
+        $student->update($updateData);
+
+        return redirect('/student-list')->with('Success', 'Student has been updated');
     }
 
     private function handleImageUpload(Request $request, $student)

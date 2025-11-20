@@ -22,10 +22,40 @@ class PhotoRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('post')) {
+            return $this->rulesForCreate();
+        }
+
+        if ($this->isMethod('put')) {
+            return $this->rulesForUpdate();
+        }
+
+        return [];
+    }
+
+    public function rulesForCreate(): array
+    {
         return [
-            'photos' => 'required|array',
-            'photos.*' => 'image|max:2048',
-            'taken_at' => 'nullable|date',
+            'photos' => 'nullable|array',
+            'photos.*' => 'nullable|file|max:2048',
+            'date_taken' => 'nullable|date',
+        ];
+    }
+
+    public function rulesForUpdate(): array
+    {
+        return [
+            'title' => 'sometimes|string|max:255',
+            'date_taken' => 'sometimes|date',
+            'image_path' => 'nullable|file|max:2048',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'photos.*.max' => 'Each photo must not exceed 2MB.',
+            'image_path.max' => 'The photo must not exceed 2MB.',
         ];
     }
 }

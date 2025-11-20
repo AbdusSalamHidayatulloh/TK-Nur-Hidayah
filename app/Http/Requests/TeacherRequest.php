@@ -36,13 +36,14 @@ class TeacherRequest extends FormRequest
      */
     public function rulesForUpdate(): array
     {
-        //mengembalikan struktur db
+        $userId = $this->route('teacher') ?? $this->route('userId');
+
         return [
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,$userId',
+            'email' => 'sometimes|email|unique:users,email,' . $userId,
             'password' => 'nullable|string|min:6',
             'position' => 'sometimes|string|max:255',
-            'birthdate' => 'sometimes|string|min:11',
+            'birthdate' => 'sometimes|date',
             'image' => 'nullable|image|max:2048',
         ];
     }

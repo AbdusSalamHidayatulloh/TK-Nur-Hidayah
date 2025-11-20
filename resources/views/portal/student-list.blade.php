@@ -6,14 +6,27 @@
         <h1 class="fw-bold">{{ $maintitle }}</h1>
     </div>
     <div class="container mt-2 mb-2">
-        <form action="/student-list" method="GET" class="form-inline w-100 d-flex flex-md-row flex-column gap-2">
-            <input type="search" placeholder="Search" name="searchStudent" class="form-control">
-            <button type="submit" class="btn btn-outline-success">Cari</button>
+        <form action="/student-list" method="GET" class="form-inline w-100 d-flex gap-2" id="searchForm">
+            <input type="search" placeholder="Search" name="searchStudent" class="form-control"
+                value="{{ request('searchStudent') }}" id="searchInput">
+            <button type="submit" class="btn btn-outline-success">Search</button>
+            <button type="button" class="btn btn-outline-secondary"
+                onclick="document.getElementById('searchInput').value = ''; document.getElementById('searchForm').submit();">Clear</button>
         </form>
-        @if(auth()->user()->role === 'admin')
-        <a href="/student-create" class="btn btn-outline-primary w-100 mt-2">Membuat Murid Baru</a>
-        @endif
     </div>
+    @if (session('Success'))
+        <div class="container mt-2 mb-2">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('Success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+    @if (auth()->user()->role === 'admin')
+        <div class="container mt-3 mb-3">
+            <a href="/student-create" class="btn btn-success">Add New Student</a>
+        </div>
+    @endif
     <div class="container d-flex mt-2 justify-content-center">
         <table class="table table-bordered">
             <thead>
@@ -35,10 +48,8 @@
                         @if (auth()->user()->role === 'admin')
                             <td>
                                 <a href="/student-edit/{{ $st->id }}" class="btn btn-primary">Edit</a>
-                                <form action="/student-delete/{{ $st->id }}" method="POST">
-                                    {{-- Validasi aksi saat ditekan --}}
+                                <form action="/student-delete/{{ $st->id }}" method="POST" style="display:inline;">
                                     @csrf
-                                    {{-- Pake method delete --}}
                                     @method('DELETE')
                                     <button class="btn btn-danger">Delete</button>
                                 </form>
