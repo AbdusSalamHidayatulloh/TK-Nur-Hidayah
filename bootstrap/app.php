@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->append([
+            \App\Http\Middleware\ConfirmLogoutIfAuth::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
@@ -21,6 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
             ], $e->getStatusCode());
         });
         $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request){
-            return redirect()->route('exception.expired');
+            return redirect()->route('expired-session');
         });
     })->create();
