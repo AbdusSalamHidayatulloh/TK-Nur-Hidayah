@@ -2,6 +2,7 @@
 @section('title', $sitename)
 @section('mainContent')
     <div class="container text-center mt-5 p-4">
+        <h3>Selamat Datang, {{ auth()->user()->name }}</h3>
         <h1 class="fw-bold">{{ $maintitle }}</h1>
     </div>
     <div class="container mt-2 mb-2">

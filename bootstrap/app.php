@@ -20,4 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'message' => $e->getMessage()
             ], $e->getStatusCode());
         });
+        $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request){
+            return redirect()->route('exception.expired');
+        });
     })->create();

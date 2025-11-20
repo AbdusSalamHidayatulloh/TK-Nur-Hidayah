@@ -5,16 +5,30 @@
         <h4 class="text-white fw-bold mb-0 mt-0">TK Nur Hidayah</h4>
     </a>
     <div class="d-md-flex py-2 gap-4 align-items-center d-none z-2 justify-content-end ms-auto">
-        <a href="/student-list" class="btn btn-sm btn-outline-light fw-semibold" style="font-size: 18px">List Murid</a>
-        <a href="/teacher-list" class="btn btn-sm btn-outline-light fw-semibold" style="font-size: 18px">List Guru
-            Kami</a>
-        <a href="/event-list" class="btn btn-sm btn-outline-light fw-semibold"
-            style="font-size: 18px">Event</a>
-        {{-- Ubah jadi logout sesuai di video dan kemabli ke static/login page aja --}}
-        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+        @auth
+            <a href="/student-list" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">List
+                Murid</a>
+            @if (auth()->user()->role === 'admin')
+                <a href="/teacher-list" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">List
+                    Guru</a>
+            @elseif(auth()->user()->role === 'teacher')
+                <a href="/account-edit/{{ auth()->id() }}" class="text-decoration-none text-white fw-semibold"
+                    style="font-size: 18px">Edit
+                    Akun</a>
+            @endif
+            <a href="/event-list" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Event</a>
+            {{-- Ubah jadi logout sesuai di video dan kemabli ke static/login page aja --}}
+            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit" class="btn btn-sm btn-outline-light fw-semibold" style="font-size: 18px;">Logout</button>
         </form>
+        @endauth
+
+        @guest
+            <span class="text-white fw-semibold" style="font-size: 18px">
+                Unauthorized User
+            </span>
+        @endguest
     </div>
     <div class="d-md-none position-relative">
         <span class="material-symbols-rounded text-white d-md-none" id="menuDropdown" role="button"

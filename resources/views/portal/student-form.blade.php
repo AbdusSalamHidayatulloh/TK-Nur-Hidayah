@@ -38,8 +38,10 @@
                 <label for="form-label">Foto</label>
                 <input type="file" name="image" class="form-control" accept=".png, .jpg, .jpeg">
                 @if($isEdit && $student->image)
-                    <img src="{{ asset($student->image) }}" alt="{{ $student->name }}"
+                    <div class="mt-2 mb-2 w-100 justify-content-center">
+                        <img src="{{ asset($student->image) }}" alt="{{ $student->name }}"
                     style="width: 120px; height:160px; object-fit:cover;">
+                    </div>
                 @endif 
             </div>
 

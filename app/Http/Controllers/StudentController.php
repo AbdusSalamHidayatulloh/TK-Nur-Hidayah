@@ -16,14 +16,14 @@ class StudentController extends Controller
                 'sitename'   => $request->searchStudent,
                 'maintitle'  => 'Murid Dicari: ' . $request->searchStudent,
                 'students'   => Student::where('name', 'like', '%' . $request->searchStudent . '%')
-                    ->paginate(8)
+                    ->paginate(10)
                     ->withQueryString(),
             ]);
         } else {
             return view('portal.student-list', [
                 'sitename'   => 'Semua Murid',
                 'maintitle'  => 'Semua Murid',
-                'students'   => Student::paginate(8)
+                'students'   => Student::paginate(10)
             ]);
         }
     }
@@ -72,12 +72,14 @@ class StudentController extends Controller
     public function updateStudent(StudentRequest $request, int $studentId)
     {
         $currentUser = $request->user();
-        if ($currentUser->role !== 'admin') {
-            abort(403, "Unauthorized access");
-        }
+        if ($currentUser->role === 'admin') {
+            $validateData = $request->validated();
+            $studentfind = Student::findOrFail($studentId);
 
-        $validateData = $request->validated();
-        $student = Student::findOrFail($studentId);
+            $studentfind->fill([
+                'name' => $validateData['name'] ?? $studentfind->name,
+                'image' => $this->handleImageUpload($request, $studentfind)
+            ])->save();
 
         $updateData = [
             'name' => $validateData['name'] ?? $student->name,
@@ -114,7 +116,6 @@ class StudentController extends Controller
         ]);
     }
 
-    //take data for update & create
     public function create()
     {
         return view('portal.student-form', [
@@ -124,9 +125,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function edit($studentId)
-    {
-        $student = Student::findOrFail($studentId);
+    public function edit(Student $student){
         return view('portal.student-form', [
             'student' => $student,
             'isEdit' => true,
