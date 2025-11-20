@@ -57,7 +57,7 @@ class EventController extends Controller
     public function updateEvent(EventRequest $request, Int $eventId) {
         $user = $request->user();
         if($user->role === 'admin') {
-            $validateData = $request->validate($request->rules());
+            $validateData = $request->validate();
             $event = Event::findOrFail($eventId);
             $event->update([
                 'event_name' => $validateData['event_name'] ?? $event->event_name,
