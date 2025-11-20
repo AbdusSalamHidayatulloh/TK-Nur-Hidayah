@@ -9,7 +9,7 @@
     <a href="/" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Beranda</a>
     <a href="/programs" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Program</a>
     <a href="/about-us" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Tentang Kami</a>
-    <a href="/our-facility" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Fasilitas</a>
+    <a href="/facility" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Fasilitas</a>
     <a href="/enlist" class="text-decoration-none w-100 text-black fs-5 fw-bolder mx-4">Pendaftaran</a>
 </div>
 <div id="overlay" class="overlay position-fixed top-0 start-0 w-100 h-100 d-md-none z-3"></div>

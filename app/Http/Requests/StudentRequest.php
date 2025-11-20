@@ -51,4 +51,11 @@ class StudentRequest extends FormRequest
             'image' => 'nullable|image|max:2048',
         ];
     }
+
+        public function messages(): array
+    {
+        return [
+            'image.max' => 'The image size must not exceed 2MB.',
+        ];
+    }
 }

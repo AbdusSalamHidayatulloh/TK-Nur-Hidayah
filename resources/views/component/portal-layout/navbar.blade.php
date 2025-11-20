@@ -1,6 +1,6 @@
 <header
     class="w-100 fixed-top d-flex flex-row justify-content-between bg-green-gradient-header align-items-center p-3 z-2">
-    <a href="/" class="text-decoration-none d-flex z-1 flex-row h-100 align-items-center">
+    <a href="/dashboard" class="text-decoration-none d-flex z-1 flex-row h-100 align-items-center">
         <img src="/image/logo/logo.png" width="70" height="70" class="me-2" />
         <h4 class="text-white fw-bold mb-0 mt-0">TK Nur Hidayah</h4>
     </a>
@@ -18,7 +18,10 @@
             @endif
             <a href="/event-list" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Event</a>
             {{-- Ubah jadi logout sesuai di video dan kemabli ke static/login page aja --}}
-            <a href="/" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Logout</a>
+            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-outline-light fw-semibold" style="font-size: 18px;">Logout</button>
+        </form>
         @endauth
 
         @guest

@@ -9,7 +9,7 @@
         <a href="/programs" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Program</a>
         <a href="/about-us" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Tentang
             Kami</a>
-        <a href="/our-facility" class="text-decoration-none text-white fw-semibold"
+        <a href="/facility" class="text-decoration-none text-white fw-semibold"
             style="font-size: 18px">Fasilitas</a>
         <a href="/enlist" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">Pendaftaran</a>
     </div>

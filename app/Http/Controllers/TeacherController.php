@@ -16,6 +16,27 @@ class TeacherController extends Controller
         return view('static.about-us', compact('teachers'));
     }
 
+    public function listTeachers(Request $request)
+    {
+        if ($request->filled('searchTeacher')) {
+            return view('portal.teacher-list', [
+                'sitename'   => $request->searchTeacher,
+                'maintitle'  => 'Guru Dicari: ' . $request->searchTeacher,
+                'teachers'   => Teacher::whereHas('user', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->searchTeacher . '%');
+                })
+                    ->paginate(10)
+                    ->withQueryString(),
+            ]);
+        } else {
+            return view('portal.teacher-list', [
+                'sitename'   => 'Semua Guru',
+                'maintitle'  => 'Semua Guru',
+                'teachers'   => Teacher::paginate(10)
+            ]);
+        }
+    }
+
     public function indexTeacher(Request $request)
     {
         if ($request->filled('teacherSearch')) {
@@ -124,7 +145,7 @@ class TeacherController extends Controller
                 'image' => $validateData['image'] ?? $teacher->image,
             ])->save();
 
-            return redirect('/teacher-list')->with('Success', 'You have change your profile, teacher');
+            return redirect('/dashboard')->with('Success', 'You have change your profile, teacher');
         }
     }
 
@@ -150,6 +171,7 @@ class TeacherController extends Controller
 
     public function editPersonal(Teacher $teacher)
     {
+
         return view('portal.teacher-form', [
             'teacher' => $teacher,
             'isEdit' => true,

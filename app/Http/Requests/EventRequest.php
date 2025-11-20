@@ -44,6 +44,8 @@ class EventRequest extends FormRequest
             'event_date_start' => 'required|date',
             'event_date_end' => 'nullable|date',
             'event_description' => 'nullable|string',
+            'photos' => 'nullable|array',
+            'photos.*' => 'nullable|file|max:2048',
         ];
     }
 
@@ -54,6 +56,15 @@ class EventRequest extends FormRequest
             'event_date_start' => 'sometimes|required|date',
             'event_date_end' => 'sometimes|date',
             'event_description' => 'sometimes|string',
+            'photos' => 'nullable|array',
+            'photos.*' => 'nullable|file|max:2048',
         ];
     }
+
+    public function messages(): array
+{
+    return [
+        'photos.*.max' => 'Each photo must not exceed 2MB.',
+    ];
+}
 }

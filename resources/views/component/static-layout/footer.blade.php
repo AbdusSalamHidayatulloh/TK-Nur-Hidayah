@@ -18,7 +18,7 @@
                     <span class="material-symbols-rounded"
                         style="vertical-align: middle; font-size: 24px;">emoji_people</span> Tentang Kami
                 </a>
-                <a href="/our-facility" class="text-decoration-none text-white fw-semibold linksFooter mb-0 mt-0"
+                <a href="/facility" class="text-decoration-none text-white fw-semibold linksFooter mb-0 mt-0"
                     style="font-size: 20px;">
                     <span class="material-symbols-rounded"
                         style="vertical-align: middle; font-size: 24px;">apartment</span> Fasilitas
