@@ -21,8 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-        Route::get('/my-profile', function () {
+    Route::get('/my-profile', function () {
         return view('portal.profile');
     });
 
@@ -34,7 +33,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::post('/student-create', [StudentController::class, 'addStudent']);
 
-    Route::get('/student-edit/{studentId}', [StudentController::class, 'editStudent']);
+    Route::get('/student-edit/{studentId}', [StudentController::class, 'edit']);
     Route::put('/student/{studentId}', [StudentController::class, 'updateStudent']);
     Route::delete('/student-delete/{studentId}', [StudentController::class, 'deleteStudent']);
 
@@ -44,10 +43,12 @@ Route::middleware('auth')->group(function () {
         return view('portal.teacher-create');
     });
     Route::post('/teacher-create', [TeacherController::class, 'addTeacher']);
-    Route::get('/teacher-edit/{teacher}', [TeacherController::class, 'editTeacher']);
+    Route::get('/teacher-edit/{teacher}', [TeacherController::class, 'edit']);
+
+    Route::get('/account-edit/{teacher}', [TeacherController::class, 'editPersonal']);
 
     Route::put('/teacher/{teacher}', [TeacherController::class, 'updateTeacher']);
-    Route::delete('/teacher-delete/{userId}', [TeacherController::class, 'deleteTeacher']);
+    Route::delete('/teacher-delete/{teacher}', [TeacherController::class, 'deleteTeacher']);
 
     Route::get('/event-list', [EventController::class, 'index']);
     Route::get('/event/{event}', [ContentController::class, 'show']);
@@ -57,7 +58,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/event-create', [EventController::class, 'makeEvent']);
     Route::get('/event-edit/{event}', [EventController::class, 'editEvent']);
-    Route::get('/event-edit/{event}', function(Event $event) {
+    Route::get('/event-edit/{event}', function (Event $event) {
         return view('portal.event-edit', ['event' => $event]);
     });
 
@@ -66,12 +67,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/event/{event}/photos', [ContentController::class, 'addPhoto']);
 
-    Route::get('/photo-create/{event}', function(Event $event) {
+    Route::get('/photo-create/{event}', function (Event $event) {
         return view('portal.photo-create', ['event' => $event]);
     });
     Route::post('/event/{event}/photos', [ContentController::class, 'addPhoto']);
-    
-    Route::get('/photo-edit/{photo}', function(Photo $photo) {
+
+    Route::get('/photo-edit/{photo}', function (Photo $photo) {
         return view('portal.photo-edit', ['photo' => $photo]);
     });
     Route::put('/photo-update/{photo}', [ContentController::class, 'updatePhoto']);
@@ -79,25 +80,19 @@ Route::middleware('auth')->group(function () {
 });
 
 //Statis (AFL2)
-Route::get('/', [ContentController::class, 'index']);
-Route::get('/programs', [ContentController::class, 'gallery']);
-Route::get('/about-us', [TeacherController::class, 'index']);
-Route::get('/facility', [FacilityController::class, 'index']);
-Route::get('/enlist', function () {
-    return view('static.enlist');
+Route::middleware('\App\Http\Middleware\ConfirmLogoutIfAuth::class')->group(function () {
+    Route::get('/', [ContentController::class, 'index']);
+    Route::get('/programs', [ContentController::class, 'gallery']);
+    Route::get('/about-us', [TeacherController::class, 'index']);
+    Route::get('/facility', [FacilityController::class, 'index']);
+    Route::get('/enlist', function () {
+        return view('static.enlist');
+    });
 });
 
-//!DELETE NANTI SELESAI, UNTUK JADI ADMIN & GURU TANPA LOGIN, LANGSUNG!
-// Route::get('/dev', function () {
-//     $fakeUser = User::where('role', 'admin')->first(); // Pilih user pertama (Admin)
-//     Auth::login($fakeUser); //Login sebagai Admin
-//     return redirect('/dashboard');
-// });
+//Error
+Route::get('/exception-expired', function () {
+    return view('exception.expired');
+})->name('expired-session');
 
-// Route::get('/teach', function () {
-//     $fakeUser = User::where('role', 'teacher')->first(); // Pilih user pertama (Admin)
-//     Auth::login($fakeUser); //Login sebagai Admin
-//     return redirect('/dashboard');
-// });
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
