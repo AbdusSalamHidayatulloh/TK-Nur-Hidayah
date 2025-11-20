@@ -12,7 +12,7 @@
                 <a href="/teacher-list" class="text-decoration-none text-white fw-semibold" style="font-size: 18px">List
                     Guru</a>
             @elseif(auth()->user()->role === 'teacher')
-                <a href="/account-edit/{{ auth()->id() }}" class="text-decoration-none text-white fw-semibold"
+                <a href="/account-edit/{{ auth()->user()->teacher->id }}" class="text-decoration-none text-white fw-semibold"
                     style="font-size: 18px">Edit
                     Akun</a>
             @endif
@@ -20,8 +20,8 @@
             {{-- Ubah jadi logout sesuai di video dan kemabli ke static/login page aja --}}
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
-            <button type="submit" class="btn btn-sm btn-outline-light fw-semibold" style="font-size: 18px;">Logout</button>
-        </form>
+                <button type="submit" class="btn btn-sm btn-outline-light fw-semibold" style="font-size: 18px;">Logout</button>
+            </form>
         @endauth
 
         @guest
